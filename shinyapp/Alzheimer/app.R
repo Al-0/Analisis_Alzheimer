@@ -14,7 +14,8 @@ library(shinythemes)
 # Define UI for application
 ui <- fluidPage(
     titlePanel("Enfermedad de Alzheimer. Análisis y Exploración."),
-    theme = shinytheme("darkly"),
+    theme = shinytheme("journal"),
+    #shinythemes::themeSelector(), 
     dashboardPage(
         dashboardHeader(title = "Navegación"),
         skin = "purple",
@@ -53,9 +54,15 @@ ui <- fluidPage(
                     tabName = "intro",
                     fluidRow(
                         titlePanel(h1("La enfermedad de Alzheimer", align = "center")),
-                    ),
-                    mainPanel(
-                        p("Hola")   
+                
+                        br(),
+                        br(),
+                        h2("¿Qué es el Alzheimer?"),
+                        br(),
+                        h4("La enfermedad del Alzheimer es una enfermedad cerebral irreversible la cual destruye lentamente las habilidades de memoria, pensamiento, y eventualmente, la habilidad de llevar a cabo actividades diarias básicas, por lo cual el paciente necesita de cuidado de tiempo completo."),
+                        h4("La enfermedad encaja en la clasificación de desórdenes del cerebro conocidos como demencia, siendo esta enfermedad el padecimiento más común de demencia.  La demencia es el término general para un grupo de enfermedades y desordenes que causan problemas de pensamiento, memoria y comportamiento."),
+                        h4("Sí bien los síntomas varían de personas a persona, todas las personas que sufren de Alzheimer padecen de ciertos síntomas tal como la pérdida de memoria, desorientación y problemas cognitivos. Las personas que padecen de la enfermedad de Alzheimer pueden encontrar dificultad para hallar las palabras adecuadas, reconocer objetos, reconocer a familia y amigos, así como sufrir de cambios emocionales bruscos, volviéndose irritables, frustrados y agitados."),
+                        h4("Conforme la enfermedad evoluciona con el tiempo estos síntomas empeoran, dando lugar a problemas físicos, entre los que se encuentra la pérdida de fuerza y balance, así como una disminución en el control de la vejiga e intestinal, lo cual provoca incontinencia. En las últimas etapas de la enfermedad, conforme más y más áreas del cerebro se ven afectadas, el paciente empieza a perder control de funciones fisiológicas básicas, tal como pasar comida (disfagia) y respirar, lo cual eventualmente termina en la defunción del paciente.")
                     )
                 ),
                 tabItem(
