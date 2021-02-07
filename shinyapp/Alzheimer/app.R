@@ -13,7 +13,7 @@ library(shinythemes)
 
 # Define UI for application
 ui <- fluidPage(
-    # Estilo CSS, utilizado para reparar cierto aspectos que hacian el texto díficil de leer.
+    # Estilo CSS, utilizado para reparar ciertos aspectos que hacian el texto díficil de leer.
     tags$style("
         .nav-tabs {
             background-color: #85929E;
@@ -128,12 +128,18 @@ ui <- fluidPage(
                                 titlePanel(h1("OASIS Brains project", align = "center")),
                                 br(),
                                 h4("La serie de acceso abierto de estudios de imágenes (Open Access Series of Imaging Studies - OASIS) es una serie de datos de neuroimágenes abierto a todo público para su estudio y análisis."),
-                                h4("La serie consiste de 3 conjuntos de datos distintos. La primera serie, denomianada OASIS-1, es un estudio transversal, lo cuál signifiva que es un estudio observacional y descriptivo que mide la prevalencia de la exposición y del efecto en una muestra poblacional en un sólo momento. Dicho de otra manera, este estudio recolecta la información de diversas visitas por individuos distintos, teniendo cada individuo una sóla visita."),
-                                h4("El segundo conjunto de datos, denominado OASIS-2, es por su parte un estudio longitudinal, es decir, un estudio donde se evalúa a un grupo de personas repetidamente a lo largo de varios años. Este conjunto tiene una cantidad menor de participantes, sin embargo cada paciente es examinada 2 o más veces(hasta 5), lo cuál nos permite realizar un estudio del desarrollo de la enfermedad a lo largo de los años."),
+                                h4("La serie consiste de 3 conjuntos de datos distintos. La primera serie, denominada OASIS-1, es un estudio transversal, lo cual significa que es un estudio observacional y descriptivo que mide la prevalencia de la exposición y del efecto en una muestra poblacional en un sólo momento. Dicho de otra manera, este estudio recolecta la información de diversas visitas por individuos distintos, teniendo cada individuo una sola visita."),
+                                h4("El segundo conjunto de datos, denominado OASIS-2, es por su parte un estudio longitudinal, es decir, un estudio donde se evalúa a un grupo de personas repetidamente a lo largo de varios años. Este conjunto tiene una cantidad menor de participantes, sin embargo cada paciente es examinado 2 o más veces (hasta 5), lo cual nos permite realizar un estudio del desarrollo de la enfermedad a lo largo de los años."),
+                                h4("El útlimo conjunto en la colección, OASIS-3, es una recopilación de imágenes obtenidas a través de resonancia magnética (MRI) y tomografía por emisión de positrones (PET) en un estudio de tipo longitudinal. De los 3 datasets, este es el que contiene el mayor potencial para generar un módelo y algoritmo de predicción, especialmente a través del uso de aprendizaje automático (machine learning). Sin embargo, con los conocimientos, habilidades y herramientas con los que cuenta el equipo de trabajo actual, así como por restricciones de tiempo, el análisis utilizando este último conjunto deberá esperar, quedando así una ventana de oportunidad que esperamos explorar en un futuro no muy lejano."),
                                 br(),
                                 img(src = "oasis-logo.png", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                 br(),
-                                h2("Variables")
+                                h2("Variables"),
+                                h4("La información con la que contamos del dataset es la siguiente:"),
+                                tags$ul(
+                                    tags$li(h4(strong("Demográfica.-"), "Existen 5 variables del tipo demográfico: Género (Gender, M/F), Mano dominante (Hand, R), Edad (Age), Educación (Educ) y estatús socioeconómico (SES). Las variables de eduación y estatus socioeconómico tienen un valor discreto entre 1 y 5")),
+                                )
+                                
                             ),
                             tabPanel(
                                 title = "OASIS 1: Cross-sectional",
