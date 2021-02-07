@@ -13,7 +13,7 @@ library(shinythemes)
 
 # Define UI for application
 ui <- fluidPage(
-    titlePanel("Enfermedad de Alzheimer. Análisis y Exploración."),
+    titlePanel("Enfermedad de Alzheimer. Análisis y modelado usando los datasets OASIS."),
     theme = shinytheme("superhero"),
     #shinythemes::themeSelector(), 
     dashboardPage(
@@ -92,7 +92,9 @@ ui <- fluidPage(
                         titlePanel(h1("¿Cuál es la utilidad de desarrollar modelos de la enfermedad de Alzheimer?", align = "center")),
                         
                         br(),
-                        h4("")
+                        h4("Debido a que los síntomas iniciales que preceden la enfermedad suelen tomar años en presentarse, la enfermedad de Alzheimer es comúnmente identificada en adultos mayores. Un sistema que permita el diagnóstico temprano de la enfermedad facilitaría tanto las intervenciones de tratamiento como el planeamiento familiar para el cuidado digno del paciente."),
+                        h4("Desafortunadamente, el diagnóstico diferencial de la enfermedad de Alzheimer es un proceso intensivo, el cual consume mucho tiempo y es costoso, implicando el desarrollo de exámenes físicos y mentales, pruebas neurológicas y de laboratorio, así como la toma de imagenes cerebrales (como son la imágen por resonancia magnética - MRI, tomografía computarizada - CT, y tomografía por emisión de positrones - PET)."),
+                        h4("Por lo anterior, sería conveniente tener un sistema que, si bien no diagnostique a una persona con un desorden neurodegenerativo (este tipo de diagnósticos jamás debe ser automatizado, siempre debe pasar por el juicio y criterio de un especialista humano), permita indicar de forma tentativa la posibilidad de que el paciente desarrolle en un futuro este desorden, facilitando así un poco el proceso de seguimiento de la enfermedad en los pacientes.")
                         
                     )
                 ),
