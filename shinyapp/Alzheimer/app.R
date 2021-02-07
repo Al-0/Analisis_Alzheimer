@@ -26,15 +26,25 @@ ui <- fluidPage(
                          icon = icon(
                              name = "file-medical",
                              lib = "font-awesome")),
+                menuItem("Justificación",
+                         tabName = "just",
+                         icon = icon(
+                             name = "align-justify",
+                             lib = "font-awesome")),
                 menuItem("Alzheimer en México",
                          tabName = "mex",
                          icon = icon(
                              name = "flag",
                              lib = "font-awesome")),
                 menuItem("Dataset OASIS",
-                         tabName = "",
+                         tabName = "oasis",
                          icon = icon(
                              name = "database",
+                             lib = "font-awesome")),
+                menuItem("Limpieza de datos",
+                         tabName = "limpieza",
+                         icon = icon(
+                             name = "broom",
                              lib = "font-awesome")),
                 menuItem("Análisis Exploratorio",
                          tabName = "aed",
@@ -45,10 +55,21 @@ ui <- fluidPage(
                          tabName = "pred",
                          icon = icon(
                              name = "project-diagram",
+                             lib = "font-awesome")),
+                menuItem("Presentación",
+                         tabName = "pres",
+                         icon = icon(
+                             name = "youtube",
+                             lib = "font-awesome")),
+                menuItem("Referencias",
+                         tabName = "ref",
+                         icon = icon(
+                             name = "list-ul",
                              lib = "font-awesome"))
             )
         ),
         dashboardBody(
+            style = "color:black",
             tabItems(
                 tabItem(
                     tabName = "intro",
@@ -56,29 +77,23 @@ ui <- fluidPage(
                         titlePanel(h1("La enfermedad de Alzheimer", align = "center")),
                 
                         br(),
-                        br(),
                         h2("¿Qué es el Alzheimer?"),
                         br(),
                         h4("La enfermedad del Alzheimer es una enfermedad cerebral irreversible la cual destruye lentamente las habilidades de memoria, pensamiento, y eventualmente, la habilidad de llevar a cabo actividades diarias básicas, por lo cual el paciente necesita de cuidado de tiempo completo."),
                         h4("La enfermedad encaja en la clasificación de desórdenes del cerebro conocidos como demencia, siendo esta enfermedad el padecimiento más común de demencia.  La demencia es el término general para un grupo de enfermedades y desordenes que causan problemas de pensamiento, memoria y comportamiento."),
+                        img(src = "alzheimer_puzzle.jpg", height = 260, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                         h4("Sí bien los síntomas varían de personas a persona, todas las personas que sufren de Alzheimer padecen de ciertos síntomas tal como la pérdida de memoria, desorientación y problemas cognitivos. Las personas que padecen de la enfermedad de Alzheimer pueden encontrar dificultad para hallar las palabras adecuadas, reconocer objetos, reconocer a familia y amigos, así como sufrir de cambios emocionales bruscos, volviéndose irritables, frustrados y agitados."),
                         h4("Conforme la enfermedad evoluciona con el tiempo estos síntomas empeoran, dando lugar a problemas físicos, entre los que se encuentra la pérdida de fuerza y balance, así como una disminución en el control de la vejiga e intestinal, lo cual provoca incontinencia. En las últimas etapas de la enfermedad, conforme más y más áreas del cerebro se ven afectadas, el paciente empieza a perder control de funciones fisiológicas básicas, tal como pasar comida (disfagia) y respirar, lo cual eventualmente termina en la defunción del paciente.")
                     )
                 ),
                 tabItem(
-                    tabName = "graph",
+                    tabName = "just",
                     fluidRow(
-                        tabsetPanel(
-                            tabPanel(
-                                title = "Home Team",
-                                img(src = "PMFTHG.png")),
-                            tabPanel(
-                                title = "Away Team",
-                                img(src = "PMFTAG.png")),
-                            tabPanel(
-                                title = "Home Team vs Away Team",
-                                img(src = "PC.png"))
-                        )
+                        titlePanel(h1("¿Cuál es la utilidad de desarrollar modelos de la enfermedad de Alzheimer?", align = "center")),
+                        
+                        br(),
+                        h4("")
+                        
                     )
                 ),
                 tabItem(
@@ -101,6 +116,19 @@ ui <- fluidPage(
                                 img(src = "max.png", height = 360, width = 540)
                             )
                         )
+                    )                
+                ),
+                tabItem(
+                    tabName = "pres",
+                    fluidRow(
+                        titlePanel(h3("Presentación del proceso y resultados obtenidos.", align = "center")),
+                        br(),
+                        HTML('<p align="center"><iframe width="700" height="400" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>')
+                    )                
+                ),
+                tabItem(
+                    tabName = "ref",
+                    fluidRow(
                     )                
                 )
             )
