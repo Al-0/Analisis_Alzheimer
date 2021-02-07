@@ -14,7 +14,7 @@ library(shinythemes)
 # Define UI for application
 ui <- fluidPage(
     titlePanel("Enfermedad de Alzheimer. Análisis y Exploración."),
-    theme = shinytheme("journal"),
+    theme = shinytheme("superhero"),
     #shinythemes::themeSelector(), 
     dashboardPage(
         dashboardHeader(title = "Navegación"),
