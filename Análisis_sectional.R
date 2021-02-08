@@ -45,6 +45,9 @@ as.data.frame(table(only_demented$M.F) / nrow(only_demented)) %>%
   theme_void() +
   labs(title = 'Enfermedad de Alzheimer', subtitle = 'Distribución del Género')
 
+# Análisis de relación entre MMSE y CDR
+sectional %>% ggplot() + aes(x = CDR, y = MMSE) + geom_bin2d() +
+  ggtitle("Análisis de relación CDR - MMSE")
   
 sectional %>% ggplot() + aes(x = Age, y = CDR, color = M.F) + geom_point()
 sectional %>% ggplot() + aes(x = CDR, fill = M.F) + geom_histogram()

@@ -320,22 +320,34 @@ ui <- fluidPage(
                                 title="Análisis Cross-sectional",
                                 column(
                                     width = 10,
+                                    br(),
+                                    h2(strong("Análisis Edad - Demencia")),
                                     h4("En primera instancia es preciso analizar a los pacientes en base a su edad, considerando que la edad suele considerarse el factor más importante para el desarrollo de la enfermedad."),
                                     br(),
                                     img(src = "cross_edad.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
                                     h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas. Con esto en mente proseguimos a filtrar cualquier persona con una edad menor a 62 años."),
                                     br(),
+                                    h2(strong("Frecuencia del estado de Demencia en la población filtrada.")),
                                     h4("Para obtener la gráfica anterior fue necesario clasificar a los pacientes en términos de demencia, para lo cual se crearon 2 grupos: el de 'Demented' para cualquier persona con CDR arriba de 0 y el de 'Non Demented' para personas con CDR de 0. Esta clasificación es similar a la usada en el dataset longitudinal. Analizando rápidamente esta variable, podemos notar lo siguiente:"),
                                     br(),
                                     img(src = "cross_dist.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
                                     h4("Se puede apreciar una distribución de aproximadamente el 50% para personas con y sin demencia."),
-                                    h4("Proseguimos a analizar el género de nuestra población que padece del transtorno. Realizando una gráfica de pastel obtenemos lo siguiente:"),
+                                    br(),
+                                    h2(strong("Distribución de género.")),
+                                    h4("Proseguimos a analizar el género de nuestra población que padece del trastorno. Realizando una gráfica de pastel obtenemos lo siguiente:"),
                                     br(),
                                     img(src = "cross_genero.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
-                                    h4("En el gráfico anterior se puede que la mayoría de los pacientes con el transtorno son mujeres, una relación de 60:40."),
+                                    h4("En el gráfico anterior se puede que la mayoría de los pacientes con el trastorno son mujeres, una relación de 60:40."),
+                                    br(),
+                                    h2(strong("Relación entre CDR y MMSE.")),
+                                    h4("Uno de los indicadores más importantes con los que contamos es el MMSE. La teoría nos dice que esta prueba sirve para evaluar el estado cognitivo de la persona, más no para diagnosticarla. Queremos saber exactamente como se ve esto en la práctica, así que realizamos la siguiente gráfica:"),
+                                    img(src = "cross_cdr_mmse.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Analizando el gráfico obtenido podemos notar una fuerte correlación negativa entre una puntuación alta de MMSE y una puntuación baja de CDR. Sin embargo, existen pacientes que a pesar de tener un puntaje alto son diagnosticados con algún grado de demencia, lo cual comprueba lo estudiado en teoría, dando a entender que si bien la prueba es un fuerte indicador del estado del paciente, no garantiza un diagnóstico infalible para la predicción del Alzheimer."),
+                                    
                                     offset = 1
                                 )
                             ),
@@ -346,8 +358,10 @@ ui <- fluidPage(
                                     br(),
                                     h4("A través del análisis realizado sobre la población, se desarrollan ciertas hipótesis sobre la población a examinar:"),
                                     tags$ul(
-                                        tags$li(h4(strong("La mayoría de los pacientes con algún estado de demencia son adultos mayores.- "), "Esta hipótesis se puede comprobar fácilmente observando la distribución de edades de los pacientes con o sin diagnóstico de demencia. Es imposible encontrar en el dataset personas menores de 60 años que presenten la condición, lo cuál es corroborado con los estudios de la enfermedad, los cuáles indican que la presencia de la enfermedad en personas jóvenes es sumamente extraña.")),
-                                        tags$li(h4(strong("Ser mujer implica una mayor probabilidad de desarrollar el transtorno.- "), "El análisis parece indicar que esta suposición es verdadera, puesto que el único grupo que presentó un mayor número de hombre que de mujeres fue el de las personas que comenzaron con demencia en el estudio longitudinal. La influencia exacta que tiene el género sobre el diagnóstico del paciente se estudiará en la sección de modelado, sin embargo, al analizar la literatura médica, es posible notar que el efecto del género probablemente es resultado de una falacia conocida como ", tags$i("Cum hoc ergo propter hoc, "), "lo cual implica que aunque dos variables tengan cierta correlación, esto no implica que una cause a la otra. La explicación de esto viene en el hecho de que, en promedio, la mujeres tienen una mayor expectativa de vida, y por lo tanto, es más probable que alcancen una edad en la que desarrollen un transtorno neurodegenerativo. Esto significa que el CDR y el género no estan relacionados directamente, sino que ambos tienen una relación con una tercera variable: la edad."))
+                                        tags$li(h4(strong("La mayoría de los pacientes con algún estado de demencia son adultos mayores.- "), "Esta hipótesis se puede comprobar fácilmente observando la distribución de edades de los pacientes con o sin diagnóstico de demencia. Es imposible encontrar en el dataset personas menores de 60 años que presenten la condición, lo cual es corroborado con los estudios de la enfermedad, los cuáles indican que la presencia de la enfermedad en personas jóvenes es sumamente extraña.")),
+                                        tags$li(h4(strong("Ser mujer implica una mayor probabilidad de desarrollar el trastorno.- "), "El análisis parece indicar que esta suposición es verdadera, puesto que el único grupo que presentó un mayor número de hombre que de mujeres fue el de las personas que comenzaron con demencia en el estudio longitudinal. La influencia exacta que tiene el género sobre el diagnóstico del paciente se estudiará en la sección de modelado, sin embargo, al analizar la literatura médica, es posible notar que el efecto del género probablemente es resultado de una falacia conocida como ", tags$i("Cum hoc ergo propter hoc, "), "lo cual implica que aunque dos variables tengan cierta correlación, esto no implica que una cause a la otra. La explicación de esto viene en el hecho de que, en promedio, las mujeres tienen una mayor expectativa de vida, y por lo tanto, es más probable que alcancen una edad en la que desarrollen un trastorno neurodegenerativo. Esto significa que el CDR y el género no están relacionados directamente, sino que ambos tienen una relación con una tercera variable: la edad.")),
+                                        tags$li(h4(strong("El mejor indicador del CDR de un paciente es su calificación en el CDR.- "), "La teoría nos dice que el MMSE es un indicador, más no una herramienta de diagnóstico. Con esto en mente cabe preguntar, ¿qué tan buen indicador eso? Las gráficas obtenidas parecen indicar cierta correlación, será necesario crear un modelo para comprobar su efectividad de predictor.")),
+                                        tags$li(h4(strong("Es posible generar un modelo de predicción en base a las variables del dataset.- "), "Para corroborar esta teoría será necesario desarrollar un modelo de predicción. En base al análisis, se espera que la edad y el MMSE estén fuertemente relacionados con la puntuación de CDR, mientras que las otras variables pueden o no influir al modelo."))
                                     ),
                                     offset = 1
                                 )
@@ -368,7 +382,7 @@ ui <- fluidPage(
                     fluidRow(
                         column(
                             width = 10,
-                            # includeMarkdown("README.md"),
+                            includeMarkdown("./www/references/References.md"),
                             offset = 1
                         )
                     )
@@ -390,7 +404,7 @@ server <- function(input, output) {
     # Los datasets de OASIS utilizados para desarrollar el proyecto
     sectional <- read.csv("oasis_cross-sectional.csv")
     longitudinal <- read.csv("oasis_longitudinal.csv")
-    
+
     # Limpieza de Datos
     new_longitudinal <- read.csv("longitudinal_clean.csv")
     new_sectional <- read.csv("sectional_clean.csv")
@@ -451,7 +465,6 @@ server <- function(input, output) {
                 group_by(Subject.ID) %>%
                 summarise(Visitas = max(Visit), SES, EDUC) %>%
                 mutate(Visitas = factor(Visitas)) %>%
-                
                 filter(Visitas == input$socioeconomic_analysis_selected_facet_wrap) %>%
                 unique() %>%
                 as.data.frame() %>%
@@ -459,6 +472,7 @@ server <- function(input, output) {
                 geom_point(aes(color = Visitas)) +
                 xlab("Nivel Socioeconómico") +
                 ylab("Años de Estudio")
+            
         }
     })
 }
