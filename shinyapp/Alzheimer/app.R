@@ -119,6 +119,7 @@ ui <- fluidPage(
                             h4("Desafortunadamente, el diagnóstico diferencial de la enfermedad de Alzheimer es un proceso intensivo, el cual consume mucho tiempo y es costoso, implicando el desarrollo de exámenes físicos y mentales, pruebas neurológicas y de laboratorio, así como la toma de imagenes cerebrales (como son la imágen por resonancia magnética - MRI, tomografía computarizada - CT, y tomografía por emisión de positrones - PET)."),
                             h4("Por lo anterior, sería conveniente tener un sistema que, si bien no diagnostique a una persona con un desorden neurodegenerativo (este tipo de diagnósticos jamás debe ser automatizado, siempre debe pasar por el juicio y criterio de un especialista humano), permita indicar de forma tentativa la posibilidad de que el paciente desarrolle en un futuro este desorden, facilitando así un poco el proceso de seguimiento de la enfermedad en los pacientes."),
                             img(src = "BrainMRI3planes.gif", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                            
                             offset = 1
                         )
                     )
@@ -126,14 +127,30 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "mex",
                     fluidRow(
-                        titlePanel(h1("El Alzheimer en México", align = "center")),
-                        
-                        br(),
-                        h4("Como sabemos México es un país cuya población está envejeciendo, con una transformación radical en su antaña pirámide de base ancha que significaba una población joven mayoritaria y que va a paso acelerado hacia un rectángulo , seme- jante al de los países desarrollados, es además uno de los países latinoamericanos con mayor prevalencia con un 7.3% y con una incidencia de 27.3 (1000 persona/año) en la enfermedad de Alzheimer."),
-                        h4("En la actualidad hay más de 13 millones de adultos mayores de 60 años en México. Se estima que para el año 2050 si no es que antes el número de mexicanos afectados por la Enfermedad de Alzheimer será de más de 3.5 millones."),
-                        h4("Considerando que estamos por desgracia entre los primeros lugares en obesidad y diabetes mellitus a nivel mundial y que los factores de riesgo del síndrome metabólico contribuyen a que entre las primeras cinco causas de morbi-mortalidad estén la diabetes, las enfermedades cardiovascu- lares y el evento vascular cerebral no será sorprendente que no nada más disminuya el incremento de la longevidad proyectada para el 2050 que es de 80-83 años para hombres y mujeres sino que seguramente veremos un incremento en el deterioro cognitivo vascular y mixto."),
-                        img(src = "AlzheimerMex.jpg", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
-                        h4("Es por este motivo entre muchos que México y sus profesionales de la salud se han encomendado a la tarea de hacer hincapié de la problemática que se nos avecina de ahí la importancia de una obra como la presente")
+                        tabsetPanel(
+                                tabPanel(
+                                    title = "Situación actual",
+                                    column(
+                                        width = 10,
+                                        
+                                        titlePanel(h1("El Alzheimer en México", align = "center")),
+                                        
+                                        br(),
+                                        h4("Como sabemos México es un país cuya población está envejeciendo, con una transformación radical en su antaña pirámide de base ancha que significaba una población joven mayoritaria y que va a paso acelerado hacia un rectángulo , seme- jante al de los países desarrollados, es además uno de los países latinoamericanos con mayor prevalencia con un 7.3% y con una incidencia de 27.3 (1000 persona/año) en la enfermedad de Alzheimer."),
+                                        h4("En la actualidad hay más de 13 millones de adultos mayores de 60 años en México. Se estima que para el año 2050 si no es que antes el número de mexicanos afectados por la Enfermedad de Alzheimer será de más de 3.5 millones."),
+                                        h4("Considerando que estamos por desgracia entre los primeros lugares en obesidad y diabetes mellitus a nivel mundial y que los factores de riesgo del síndrome metabólico contribuyen a que entre las primeras cinco causas de morbi-mortalidad estén la diabetes, las enfermedades cardiovascu- lares y el evento vascular cerebral no será sorprendente que no nada más disminuya el incremento de la longevidad proyectada para el 2050 que es de 80-83 años para hombres y mujeres sino que seguramente veremos un incremento en el deterioro cognitivo vascular y mixto."),
+                                        img(src = "AlzheimerMex.jpg", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                        h4("Es por este motivo entre muchos que México y sus profesionales de la salud se han encomendado a la tarea de hacer hincapié de la problemática que se nos avecina de ahí la importancia de una obra como la presente"),
+                                        
+                                        offset = 1
+                                    )   
+                                ),
+                                tabPanel(
+                                    title = "Infograma",
+                                    br(),
+                                    img(src = "info_mex.png", height = 1060, width = 740, style="display: block; margin-left: auto; margin-right: auto;"),
+                                )
+                        )
                     )
                 ),
                 tabItem(
@@ -258,8 +275,8 @@ server <- function(input, output) {
     # Muestra la distribución del género de los pacientes
     output$cake_graph_output <- renderPlot({
         as.data.frame(table(new_longitudinal$M.F) / nrow(new_longitudinal)) %>%
-            rename(Género = Var1) %>%
-            ggplot(aes(x = "''", y = Freq, fill = Género)) +
+            rename(Genero = Var1) %>%
+            ggplot(aes(x = "''", y = Freq, fill = Genero)) +
             geom_bar(stat = "identity", color = "white") +
             coord_polar(theta = "y") +
             scale_fill_manual(values = c("hotpink", "blue")) +
