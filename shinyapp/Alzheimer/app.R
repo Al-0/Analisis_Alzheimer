@@ -451,6 +451,8 @@ server <- function(input, output) {
                 group_by(Subject.ID) %>%
                 summarise(Visitas = max(Visit), SES, EDUC) %>%
                 mutate(Visitas = factor(Visitas)) %>%
+                
+                filter(Visitas == input$socioeconomic_analysis_selected_facet_wrap) %>%
                 unique() %>%
                 as.data.frame() %>%
                 ggplot(aes(SES, EDUC, group = Visitas)) +
