@@ -370,6 +370,13 @@ ui <- fluidPage(
                     )
                 ),
                 tabItem(
+                    tabName = "pred",
+                    fluidRow(
+                        titlePanel(h1("Desarrollo de un modelo de predicción del CDR.", align = "center")),
+                        br(),
+                    )
+                ),
+                tabItem(
                     tabName = "pres",
                     fluidRow(
                         titlePanel(h1("Presentación del proceso y resultados obtenidos.", align = "center")),
