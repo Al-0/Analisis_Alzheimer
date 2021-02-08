@@ -315,16 +315,6 @@ ui <- fluidPage(
                                     column(
                                         width = 5,
                                         plotOutput(outputId = "analysis_selected_facet_wrap_output"))),
-                                column(
-                                    width = 5,
-                                    fluidRow(selectInput("cake_group", "Selecciona un grupo de tu interés", choices = c("All", unique(read.csv("oasis_longitudinal.csv")$Group)))),
-                                    fluidRow(h4("Prueba")),
-                                    offset = 1
-                                ),
-                                column(
-                                    width = 5,
-                                    plotOutput("cake_graph_output")
-                                )
                             ),
                             tabPanel(
                                 title="Análisis Cross-sectional",
@@ -452,11 +442,21 @@ server <- function(input, output) {
                 as.data.frame() %>%
                 ggplot(aes(SES, EDUC, group = Visitas)) +
                 geom_point(aes(color = Visitas)) +
-                # facet_wrap(~ Visitas) +
                 xlab("Nivel Socioeconómico") +
                 ylab("Años de Estudio")
         } else {
-            
+            new_longitudinal %>%
+                select(Subject.ID, Visit, SES, EDUC) %>%
+                na.omit() %>%
+                group_by(Subject.ID) %>%
+                summarise(Visitas = max(Visit), SES, EDUC) %>%
+                mutate(Visitas = factor(Visitas)) %>%
+                unique() %>%
+                as.data.frame() %>%
+                ggplot(aes(SES, EDUC, group = Visitas)) +
+                geom_point(aes(color = Visitas)) +
+                xlab("Nivel Socioeconómico") +
+                ylab("Años de Estudio")
         }
     })
 }
