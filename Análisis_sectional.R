@@ -21,6 +21,31 @@ sectional_demented %>% na.omit(Demented) %>%
   ggtitle("Frecuencia de edades. Factor de demencia en barras apiladas.") 
 sectional_demented %>% filter(Demented == "Demented") %>% summarise(min(Age))
 
+# Se filtran las personas menores de 62 años
+sectional_demented <- sectional_demented %>% filter(Age >= 62)
+
+# Análisis de distribución de demencia
+sectional_demented %>% ggplot() + aes(x = Demented) + 
+  geom_histogram(stat="count", fill = "blue", color = "black") +
+  ggtitle("Frecuencia del estado de demencia.") +
+  xlab("Estado de demencia") +
+  theme_classic()
+
+# Análisis de género y demencia
+only_demented <- sectional_demented %>% filter(Demented == "Demented");head(only_demented)
+table(only_demented$M.F) / nrow(only_demented)
+# F: 0.6, M: 0.4
+as.data.frame(table(only_demented$M.F) / nrow(only_demented)) %>%
+  mutate(Var1 = ifelse(Var1 == 'F', 'Femenino', 'Masculino')) %>%
+  rename(Genero = Var1) %>%
+  ggplot(aes(x = '', y = Freq, fill = Genero)) +
+  geom_bar(stat = 'identity', color = 'white') +
+  coord_polar(theta = 'y') +
+  scale_fill_manual(values = c('hotpink', 'blue')) +
+  theme_void() +
+  labs(title = 'Enfermedad de Alzheimer', subtitle = 'Distribución del Género')
+
+  
 sectional %>% ggplot() + aes(x = Age, y = CDR, color = M.F) + geom_point()
 sectional %>% ggplot() + aes(x = CDR, fill = M.F) + geom_histogram()
 

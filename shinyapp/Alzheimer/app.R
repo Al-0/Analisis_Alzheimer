@@ -256,16 +256,31 @@ ui <- fluidPage(
                                     br(),
                                     img(src = "cross_edad.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
-                                    h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas."),
+                                    h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas. Con esto en mente proseguimos a filtrar cualquier persona con una edad menor a 62 años."),
                                     br(),
+                                    h4("Para obtener la gráfica anterior fue necesario clasificar a los pacientes en términos de demencia, para lo cual se crearon 2 grupos: el de 'Demented' para cualquier persona con CDR arriba de 0 y el de 'Non Demented' para personas con CDR de 0. Esta clasificación es similar a la usada en el dataset longitudinal. Analizando rápidamente esta variable, podemos notar lo siguiente:"),
+                                    br(),
+                                    img(src = "cross_dist.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Se puede apreciar una distribución de aproximadamente el 50% para personas con y sin demencia."),
+                                    h4("Proseguimos a analizar el género de nuestra población que padece del transtorno. Realizando una gráfica de pastel obtenemos lo siguiente:"),
+                                    br(),
+                                    img(src = "cross_genero.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("En el gráfico anterior se puede que la mayoría de los pacientes con el transtorno son mujeres, una relación de 60:40."),
                                     offset = 1
                                 )
                             ),
                             tabPanel(
                                 title="Hipótesis",
                                 column(
-                                    width = 5,
-                                    
+                                    width = 10,
+                                    br(),
+                                    h4("A través del análisis realizado sobre la población, se desarrollan ciertas hipótesis sobre la población a examinar:"),
+                                    tags$ul(
+                                        tags$li(h4(strong("La mayoría de los pacientes con algún estado de demencia son adultos mayores.- "), "Esta hipótesis se puede comprobar fácilmente observando la distribución de edades de los pacientes con o sin diagnóstico de demencia. Es imposible encontrar en el dataset personas menores de 60 años que presenten la condición, lo cuál es corroborado con los estudios de la enfermedad, los cuáles indican que la presencia de la enfermedad en personas jóvenes es sumamente extraña.")),
+                                        tags$li(h4(strong("Ser mujer implica una mayor probabilidad de desarrollar el transtorno.- "), "El análisis parece indicar que esta suposición es verdadera, puesto que el único grupo que presentó un mayor número de hombre que de mujeres fue el de las personas que comenzaron con demencia en el estudio longitudinal. La influencia exacta que tiene el género sobre el diagnóstico del paciente se estudiará en la sección de modelado, sin embargo, al analizar la literatura médica, es posible notar que el efecto del género probablemente es resultado de una falacia conocida como ", tags$i("Cum hoc ergo propter hoc, "), "lo cual implica que aunque dos variables tengan cierta correlación, esto no implica que una cause a la otra. La explicación de esto viene en el hecho de que, en promedio, la mujeres tienen una mayor expectativa de vida, y por lo tanto, es más probable que alcancen una edad en la que desarrollen un transtorno neurodegenerativo. Esto significa que el CDR y el género no estan relacionados directamente, sino que ambos tienen una relación con una tercera variable: la edad."))
+                                    ),
                                     offset = 1
                                 )
                             )
