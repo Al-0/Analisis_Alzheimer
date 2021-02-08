@@ -229,7 +229,7 @@ ui <- fluidPage(
                     fluidRow(
                         column(
                             width = 10,
-                            includeMarkdown("README.md"),
+                            # includeMarkdown("README.md"),
                             offset = 1
                         )
                     )
