@@ -12,6 +12,8 @@ sectional <- sectional %>%
 rows <- dim(sectional)[1]
 tail(sectional, 21)
 sectional <- sectional[1:(rows-20),];tail(sectional)
+sectional <- na.omit(sectional)
+dim(sectional)
 
 # Obtenemos un modelo lineal
 attach(sectional)
@@ -28,5 +30,23 @@ summary(m)
 # Modelo lineal incluyendo solamente MMSE y Edad
 m2 <- lm(CDR ~ Age + MMSE)
 summary(m2)
-# Al asilar el modelo obtenemos un p-value más aceptable de la edad, con lo cuál podemos estar
+# Al aislar el modelo obtenemos un p-value más aceptable de la edad, con lo cuál podemos estar
 # satisfechos en incluirla en nuestro modelo predictor.
+
+# Gráficas residuales estandarizadas
+StanRes1 <- rstandard(m2)
+par(mfrow = c(2, 1))
+plot(Age, StanRes1, ylab = "Residuales Estandarizados")
+plot(MMSE, StanRes1, ylab = "Residuales Estandarizados")
+dev.off()
+# Se puede observar un patrón ligero en la gráfica de Edades, mientras que en la de MMSE el
+# patrón resulta sumamente alto. Esto nos indica que el modelo lineal no es el más indicado
+# para este dataset, y que los resultados obtenidos no serán demasiado precisos.
+
+# Finalmente mostramos una gráfica de Y, el precio contra los valores
+# ajustados 
+plot(m2$fitted.values, CDR, main="Modelo de regresión lineal múltiple",
+     sub="2.375087 + 0.002396 * Age - 0.083702 * MMSE",
+     xlab = "Valores ajustados de CDR", ylab = "CDR")
+abline(lsfit(m2$fitted.values, CDR))
+m2$fitted.values

@@ -374,6 +374,7 @@ ui <- fluidPage(
                     fluidRow(
                         titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
                         br(),
+                        h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR.")
                     )
                 ),
                 tabItem(
