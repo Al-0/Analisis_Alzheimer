@@ -206,19 +206,14 @@ ui <- fluidPage(
                                     width = 5,
                                     fluidRow(selectInput("cake_group", "Selecciona un grupo de tu interés", choices = c("All", unique(read.csv("oasis_longitudinal.csv")$Group)))),
                                     fluidRow(h4("Prueba")),
-                                    
                                     offset = 1
                                 ),
                                 column(
                                     width = 5,
                                     plotOutput("cake_graph_output")
                                 )
-                                
-                                
-                                # img(src = "max.png", height = 360, width = 540)
                             )
                         )
-                        # dataTableOutput("eda_output")
                     )
                 ),
                 tabItem(
@@ -272,17 +267,19 @@ server <- function(input, output) {
         options = list(aLengthMenu = c(10, 20, 50, 100, 500), iDisplayLength = 10)
     )
     
-    # Muestra la distribución del género de los pacientes
+    # Muestra la distribución del género de los pacientes según el grupo al que pertenecen
     output$cake_graph_output <- renderPlot({
-        as.data.frame(table(new_longitudinal$M.F) / nrow(new_longitudinal)) %>%
+        data_group <- ifelse(input$cake_group == "All", unique(new_longitudinal$Group), input$cake_group)
+        data_longitudinal <- new_longitudinal %>%
+            filter(Group %in% data_group, Visit == 1)
+        as.data.frame(table(data_longitudinal$M.F) / nrow(data_longitudinal)) %>%
             rename(Genero = Var1) %>%
-            ggplot(aes(x = "''", y = Freq, fill = Genero)) +
+            ggplot(aes(x = "", y = Freq, fill = Genero)) +
             geom_bar(stat = "identity", color = "white") +
             coord_polar(theta = "y") +
             scale_fill_manual(values = c("hotpink", "blue")) +
             theme_void()
     })
-    
 }
 
 # Run the application 
