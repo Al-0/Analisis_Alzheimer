@@ -8,5 +8,5 @@ sectional %>% ggplot() + aes(x = Age, y = CDR, color = M.F) + geom_point()
 sectional %>% ggplot() + aes(x = CDR, fill = M.F) + geom_histogram()
 sectional_demented <- sectional %>% mutate(demented = ifelse(CDR > 0, "Demented", "Non demented"))
 sectional_demented %>% na.omit(demented) %>%
-  ggplot() + aes(x = Age, fill = demented) + geom_histogram() + facet_wrap("M.F")
+  ggplot() + aes(x = Age, fill = demented) + geom_histogram() 
 sectional_demented %>% ggplot() + aes(x = MMSE, fill = demented) + geom_histogram()

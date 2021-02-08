@@ -126,7 +126,14 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "mex",
                     fluidRow(
+                        titlePanel(h1("El Alzheimer en México", align = "center")),
                         
+                        br(),
+                        h4("Como sabemos México es un país cuya población está envejeciendo, con una transformación radical en su antaña pirámide de base ancha que significaba una población joven mayoritaria y que va a paso acelerado hacia un rectángulo , seme- jante al de los países desarrollados, es además uno de los países latinoamericanos con mayor prevalencia con un 7.3% y con una incidencia de 27.3 (1000 persona/año) en la enfermedad de Alzheimer."),
+                        h4("En la actualidad hay más de 13 millones de adultos mayores de 60 años en México. Se estima que para el año 2050 si no es que antes el número de mexicanos afectados por la Enfermedad de Alzheimer será de más de 3.5 millones."),
+                        h4("Considerando que estamos por desgracia entre los primeros lugares en obesidad y diabetes mellitus a nivel mundial y que los factores de riesgo del síndrome metabólico contribuyen a que entre las primeras cinco causas de morbi-mortalidad estén la diabetes, las enfermedades cardiovascu- lares y el evento vascular cerebral no será sorprendente que no nada más disminuya el incremento de la longevidad proyectada para el 2050 que es de 80-83 años para hombres y mujeres sino que seguramente veremos un incremento en el deterioro cognitivo vascular y mixto."),
+                        img(src = "AlzheimerMex.jpg", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                        h4("Es por este motivo entre muchos que México y sus profesionales de la salud se han encomendado a la tarea de hacer hincapié de la problemática que se nos avecina de ahí la importancia de una obra como la presente")
                     )
                 ),
                 tabItem(
@@ -135,22 +142,26 @@ ui <- fluidPage(
                         tabsetPanel(
                             tabPanel(
                                 title = "OASIS",
-                                column(width = 10,
-                                       titlePanel(h1("OASIS Brains project", align = "center")),
-                                       br(),
-                                       h4("La serie de acceso abierto de estudios de imágenes (Open Access Series of Imaging Studies - OASIS) es una serie de datos de neuroimágenes abierto a todo público para su estudio y análisis."),
-                                       h4("La serie consiste de 3 conjuntos de datos distintos. La primera serie, denominada OASIS-1, es un estudio transversal, lo cual significa que es un estudio observacional y descriptivo que mide la prevalencia de la exposición y del efecto en una muestra poblacional en un sólo momento. Dicho de otra manera, este estudio recolecta la información de diversas visitas por individuos distintos, teniendo cada individuo una sola visita."),
-                                       h4("El segundo conjunto de datos, denominado OASIS-2, es por su parte un estudio longitudinal, es decir, un estudio donde se evalúa a un grupo de personas repetidamente a lo largo de varios años. Este conjunto tiene una cantidad menor de participantes, sin embargo cada paciente es examinado 2 o más veces (hasta 5), lo cual nos permite realizar un estudio del desarrollo de la enfermedad a lo largo de los años."),
-                                       h4("El útlimo conjunto en la colección, OASIS-3, es una recopilación de imágenes obtenidas a través de resonancia magnética (MRI) y tomografía por emisión de positrones (PET) en un estudio de tipo longitudinal. De los 3 datasets, este es el que contiene el mayor potencial para generar un módelo y algoritmo de predicción, especialmente a través del uso de aprendizaje automático (machine learning). Sin embargo, con los conocimientos, habilidades y herramientas con los que cuenta el equipo de trabajo actual, así como por restricciones de tiempo, el análisis utilizando este último conjunto deberá esperar, quedando así una ventana de oportunidad que esperamos explorar en un futuro no muy lejano."),
-                                       br(),
-                                       img(src = "oasis-logo.png", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
-                                       br(),
-                                       h2("Variables"),
-                                       h4("La información con la que contamos del dataset es la siguiente:"),
-                                       tags$ul(
-                                           tags$li(h4(strong("Demográfica.-"), "Existen 5 variables del tipo demográfico: Género (Gender, M/F), Mano dominante (Hand, R), Edad (Age), Educación (Educ) y estatús socioeconómico (SES). Las variables de eduación y estatus socioeconómico tienen un valor discreto entre 1 y 5")),
-                                       ),
-                                       offset = 1
+                                column(
+                                    width = 10,
+                                    titlePanel(h1("OASIS Brains project", align = "center")),
+                                    br(),
+                                    h4("La serie de acceso abierto de estudios de imágenes (Open Access Series of Imaging Studies - OASIS) es una serie de datos de neuroimágenes abierto a todo público para su estudio y análisis."),
+                                    h4("La serie consiste de 3 conjuntos de datos distintos. La primera serie, denominada OASIS-1, es un estudio transversal, lo cual significa que es un estudio observacional y descriptivo que mide la prevalencia de la exposición y del efecto en una muestra poblacional en un sólo momento. Dicho de otra manera, este estudio recolecta la información de diversas visitas por individuos distintos, teniendo cada individuo una sola visita."),
+                                    h4("El segundo conjunto de datos, denominado OASIS-2, es por su parte un estudio longitudinal, es decir, un estudio donde se evalúa a un grupo de personas repetidamente a lo largo de varios años. Este conjunto tiene una cantidad menor de participantes, sin embargo cada paciente es examinado 2 o más veces (hasta 5), lo cual nos permite realizar un estudio del desarrollo de la enfermedad a lo largo de los años."),
+                                    h4("El último conjunto en la colección, OASIS-3, es una recopilación de imágenes obtenidas a través de resonancia magnética (MRI) y tomografía por emisión de positrones (PET) en un estudio de tipo longitudinal. De los 3 datasets, este es el que contiene el mayor potencial para generar un modelo y algoritmo de predicción, especialmente a través del uso de aprendizaje automático (machine learning). Sin embargo, con los conocimientos, habilidades y herramientas con los que cuenta el equipo de trabajo actual, así como por restricciones de tiempo, el análisis utilizando este último conjunto deberá esperar, quedando así una ventana de oportunidad que esperamos explorar en un futuro no muy lejano."),
+                                    br(),
+                                    img(src = "oasis-logo.png", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h2("Variables"),
+                                    h4("La información con la que contamos del dataset es la siguiente:"),
+                                    tags$ul(
+                                        tags$li(h4(strong("Demográfica.- "), "Existen 5 variables del tipo demográfico: Género (Gender, M/F), Mano dominante (Hand, R), Edad (Age), Educación (Educ) y estatus socioeconómico (SES). Las variables de educación y estatus socioeconómico tienen un valor discreto entre 1 y 5, en el caso de educación los valores representan: 1 - Menos de graduación de preparatoria, 2 - Graduación de preparatoria, 3 - Algo de estudio universitario, 4 - Graduado universitario, 5 - Superior a estudios universitarios. En el caso del indicador socioeconómico: 1 - Clase baja, 2 - Clase media-baja, 3 - Clase media, 4 - Clase media-alta, 5 - Clase Alta.")),
+                                        tags$li(h4(strong("Clínica.- "), "Se tienen 2 variables: Mini-Mental State Examination (MMSE, 0-30) e índice clínico de demencia (Clinical Dementia Rating, CDR, 0-3). El MMSE es un examen de 30 preguntas para evaluar las habilidades cognitivas de un paciente, el cual sirve para indicar la presencia de algún impedimento cognitivo, más no para diagnosticar algún desorden. El CDR es una escala utilizada para cuantificar la gravedad (etapa) de los síntomas de demencia, teniendo una escala de: 0 - ninguno, 0.5 - muy ligero, 1 - ligero, 2 - moderado, 3 - severo. Cualquier participante con un CDR mayor a 0.5 fue diagnosticado con probable enfermedad de Alzheimer. Ningún paciente fue evaluado con un CDR de 3.")),
+                                        tags$li(h4(strong("Volúmenes anatómicos estimados.- "), "Hay 3 variables: Volumen intracraneal total estimado (Estimated total intracranial volume, eTIV, mm3), Factor de escala atlas (Atlas scaling factor, ASF) y Volumen cerebral completo normalizado (Normalized whole brain volume, nWBV).")),
+                                        tags$li(h4(strong("Longitudinales.- "), "El dataset longitudinal presenta unas cuantas variables extras: Group (Nondemented, Demented o Converted), el cual es un dato basado en el CDR y documenta si el paciente jamás presento demencia, inicio con ella o sí la desarrollo en el tiempo transcurrido en el estudio; Visit, el cual indica el número de la visita para un paciente; MR Delay, días entre la primera y la 'n' sesión."))
+                                    ),
+                                    offset = 1
                                 )
                             ),
                             tabPanel(
