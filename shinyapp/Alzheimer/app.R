@@ -233,7 +233,6 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "aed",
                     fluidRow(
-                        titlePanel(h3("Análisis Exploratorio", align = "center")),
                         tabsetPanel(
                             tabPanel(
                                 title = "Distribución de Género",
@@ -247,6 +246,27 @@ ui <- fluidPage(
                                 column(
                                     width = 5,
                                     plotOutput("cake_graph_output")
+                                )
+                            ),
+                            tabPanel(
+                                title="Análisis Cross-sectional",
+                                column(
+                                    width = 10,
+                                    h4("En primera instancia es preciso analizar a los pacientes en base a su edad, considerando que la edad suele considerarse el factor más importante para el desarrollo de la enfermedad."),
+                                    br(),
+                                    img(src = "cross_edad.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas."),
+                                    br(),
+                                    offset = 1
+                                )
+                            ),
+                            tabPanel(
+                                title="Hipótesis",
+                                column(
+                                    width = 5,
+                                    
+                                    offset = 1
                                 )
                             )
                         )
