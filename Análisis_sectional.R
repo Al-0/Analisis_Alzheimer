@@ -14,24 +14,24 @@ tail(sectional, 21)
 sectional <- sectional[1:(rows-20),];tail(sectional)
 write.csv(sectional,"sectional_clean.csv", row.names = FALSE)
 
-# Análisis de edad / demencia
+# AnÃ¡lisis de edad / demencia
 sectional_demented <- sectional %>% mutate(Demented = ifelse(CDR > 0, "Demented", "Non demented"))
 sectional_demented %>% na.omit(Demented) %>%
   ggplot() + aes(x = Age, fill = Demented) + geom_histogram() +
   ggtitle("Frecuencia de edades. Factor de demencia en barras apiladas.") 
 sectional_demented %>% filter(Demented == "Demented") %>% summarise(min(Age))
 
-# Se filtran las personas menores de 62 años
+# Se filtran las personas menores de 62 aÃ±os
 sectional_demented <- sectional_demented %>% filter(Age >= 62)
 
-# Análisis de distribución de demencia
+# AnÃ¡lisis de distribuciÃ³n de demencia
 sectional_demented %>% ggplot() + aes(x = Demented) + 
   geom_histogram(stat="count", fill = "blue", color = "black") +
   ggtitle("Frecuencia del estado de demencia.") +
   xlab("Estado de demencia") +
   theme_classic()
 
-# Análisis de género y demencia
+# AnÃ¡lisis de gÃ©nero y demencia
 only_demented <- sectional_demented %>% filter(Demented == "Demented");head(only_demented)
 table(only_demented$M.F) / nrow(only_demented)
 # F: 0.6, M: 0.4
@@ -43,11 +43,11 @@ as.data.frame(table(only_demented$M.F) / nrow(only_demented)) %>%
   coord_polar(theta = 'y') +
   scale_fill_manual(values = c('hotpink', 'blue')) +
   theme_void() +
-  labs(title = 'Enfermedad de Alzheimer', subtitle = 'Distribución del Género')
+  labs(title = 'Enfermedad de Alzheimer', subtitle = 'DistribuciÃ³n del GÃ©nero')
 
-# Análisis de relación entre MMSE y CDR
+# AnÃ¡lisis de relaciÃ³n entre MMSE y CDR
 sectional %>% ggplot() + aes(x = CDR, y = MMSE) + geom_bin2d() +
-  ggtitle("Análisis de relación CDR - MMSE")
+  ggtitle("AnÃ¡lisis de relaciÃ³n CDR - MMSE")
   
 sectional %>% ggplot() + aes(x = Age, y = CDR, color = M.F) + geom_point()
 sectional %>% ggplot() + aes(x = CDR, fill = M.F) + geom_histogram()
