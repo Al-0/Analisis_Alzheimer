@@ -29,7 +29,7 @@ ui <- fluidPage(
         border-top-color: #FFF;
     }"
     ),
-    titlePanel(title = "Enfermedad de Alzheimer. Análisis y modelado usando los datasets OASIS."),
+    titlePanel(title = "Enfermedad de Alzheimer. Análisis y modelado usando los datasets OASIS"),
     theme = shinytheme(theme = "superhero"),
     #shinythemes::themeSelector(), 
     dashboardPage(
@@ -204,7 +204,7 @@ ui <- fluidPage(
                                 column(
                                     width = 10,
                                     
-                                    titlePanel(h1("Limpieza de datos.", align = "center")),
+                                    titlePanel(h1("Limpieza de datos", align = "center")),
                                     br(),   
                                     h2(strong("Cross Sectional")),
                                     h4("Para utilizar el csv provisto no fue necesario realizar una gran cantidad de modificaciones, sólo prescindir de ciertas columnas y filas. Por un lado, la variable 'Hand' fue removida, ya que todos los pacientes del conjunto de datos son diestros y por lo tanto esta variable no colabora información relevante."),
@@ -328,21 +328,21 @@ ui <- fluidPage(
                                     br(),
                                     h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas. Con esto en mente proseguimos a filtrar cualquier persona con una edad menor a 62 años."),
                                     br(),
-                                    h2(strong("Frecuencia del estado de Demencia en la población filtrada.")),
+                                    h2(strong("Frecuencia del estado de Demencia en la población filtrada")),
                                     h4("Para obtener la gráfica anterior fue necesario clasificar a los pacientes en términos de demencia, para lo cual se crearon 2 grupos: el de 'Demented' para cualquier persona con CDR arriba de 0 y el de 'Non Demented' para personas con CDR de 0. Esta clasificación es similar a la usada en el dataset longitudinal. Analizando rápidamente esta variable, podemos notar lo siguiente:"),
                                     br(),
                                     img(src = "cross_dist.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
                                     h4("Se puede apreciar una distribución de aproximadamente el 50% para personas con y sin demencia."),
                                     br(),
-                                    h2(strong("Distribución de género.")),
+                                    h2(strong("Distribución de género")),
                                     h4("Proseguimos a analizar el género de nuestra población que padece del trastorno. Realizando una gráfica de pastel obtenemos lo siguiente:"),
                                     br(),
                                     img(src = "cross_genero.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
                                     h4("En el gráfico anterior se puede que la mayoría de los pacientes con el trastorno son mujeres, una relación de 60:40."),
                                     br(),
-                                    h2(strong("Relación entre CDR y MMSE.")),
+                                    h2(strong("Relación entre CDR y MMSE")),
                                     h4("Uno de los indicadores más importantes con los que contamos es el MMSE. La teoría nos dice que esta prueba sirve para evaluar el estado cognitivo de la persona, más no para diagnosticarla. Queremos saber exactamente como se ve esto en la práctica, así que realizamos la siguiente gráfica:"),
                                     img(src = "cross_cdr_mmse.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
@@ -372,14 +372,14 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "pred",
                     fluidRow(
-                        titlePanel(h1("Desarrollo de un modelo de predicción del CDR.", align = "center")),
+                        titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
                         br(),
                     )
                 ),
                 tabItem(
                     tabName = "pres",
                     fluidRow(
-                        titlePanel(h1("Presentación del proceso y resultados obtenidos.", align = "center")),
+                        titlePanel(h1("Presentación del proceso y resultados obtenidos", align = "center")),
                         br(),
                         HTML('<p align="center"><iframe width="700" height="400" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>')
                     )

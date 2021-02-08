@@ -115,21 +115,57 @@ Una pequeña corrección fue hecha al paciente 'OAS2_0036', el cuál tenía un c
 
 ## Análisis exploratorio 🔎
 
-### Distribución de género
+### Conjunto de datos longitudinal
+#### Distribución de género
 
 Todos los pacientes
 
-Sin demencia
+Sospechosos
 
-Con demencia
+Dementes
 
-Convertidos
+Desarrollo en pacientes sanos
 
-### Análisis Cross-sectional
+Desarrollo en pacientes afectado
+
+#### Análisis financiero: nivel socioeconómico y años de estudio según el número de visitas
+
+Todos los pacientes
+
+5 visitas
+
+4 visitas
+
+3 visitas
+
+2 visitas
+
+
+### Conjunto de datos Cross-sectional
+#### Edad-demencia
 En primera instancia es preciso analizar a los pacientes en base a su edad, considerando que la edad suele considerarse el factor más importante para el desarrollo de la enfermedad.
 
 
 Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas. Con esto en mente proseguimos a filtrar cualquier persona con una edad menor a 62 años.
+
+#### Frecuencia del estado de Demencia en la población filtrada
+
+Para obtener la gráfica anterior fue necesario clasificar a los pacientes en términos de demencia, para lo cual se crearon 2 grupos: el de 'Demented' para cualquier persona con CDR arriba de 0 y el de 'Non Demented' para personas con CDR de 0. Esta clasificación es similar a la usada en el dataset longitudinal. Analizando rápidamente esta variable, podemos notar lo siguiente:
+
+
+Se puede apreciar una distribución de aproximadamente el 50% para personas con y sin demencia.
+
+#### Distibución de género
+
+Proseguimos a analizar el género de nuestra población que padece del trastorno. Realizando una gráfica de pastel obtenemos lo siguiente:
+
+En el gráfico anterior se puede que la mayoría de los pacientes con el trastorno son mujeres, una relación de 60:40.
+
+#### Relación entre CDR y MMSE
+
+Uno de los indicadores más importantes con los que contamos es el MMSE. La teoría nos dice que esta prueba sirve para evaluar el estado cognitivo de la persona, más no para diagnosticarla. Queremos saber exactamente como se ve esto en la práctica, así que realizamos la siguiente gráfica:
+
+Analizando el gráfico obtenido podemos notar una fuerte correlación negativa entre una puntuación alta de MMSE y una puntuación baja de CDR. Sin embargo, existen pacientes que a pesar de tener un puntaje alto son diagnosticados con algún grado de demencia, lo cual comprueba lo estudiado en teoría, dando a entender que si bien la prueba es un fuerte indicador del estado del paciente, no garantiza un diagnóstico infalible para la predicción del Alzheimer.
 
 ## Hipótesis 🔬
 
@@ -138,6 +174,11 @@ A través del análisis realizado sobre la población, se desarrollan ciertas hi
 **La mayoría de los pacientes con algún estado de demencia son adultos mayores**.- Esta hipótesis se puede comprobar fácilmente observando la distribución de edades de los pacientes con o sin diagnóstico de demencia. Es imposible encontrar en el dataset personas menores de 60 años que presenten la condición, lo cuál es corroborado con los estudios de la enfermedad, los cuáles indican que la presencia de la enfermedad en personas jóvenes es sumamente extraña.
 
 **Ser mujer implica una mayor probabilidad de desarrollar el transtorno**.- El análisis parece indicar que esta suposición es verdadera, puesto que el único grupo que presentó un mayor número de hombre que de mujeres fue el de las personas que comenzaron con demencia en el estudio longitudinal. La influencia exacta que tiene el género sobre el diagnóstico del paciente se estudiará en la sección de modelado, sin embargo, al analizar la literatura médica, es posible notar que el efecto del género probablemente es resultado de una falacia conocida como Cum hoc ergo propter hoc, lo cual implica que aunque dos variables tengan cierta correlación, esto no implica que una cause a la otra. La explicación de esto viene en el hecho de que, en promedio, la mujeres tienen una mayor expectativa de vida, y por lo tanto, es más probable que alcancen una edad en la que desarrollen un transtorno neurodegenerativo. Esto significa que el CDR y el género no estan relacionados directamente, sino que ambos tienen una relación con una tercera variable: la edad.
+
+## Modelo de predicción 📈
+
+### Desarrollo de un modelo de predicción del CDR
+
 
 ## Referencias 📚
 
