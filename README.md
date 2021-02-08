@@ -1,6 +1,6 @@
 # Proyecto BEDU-Santander: Análisis de Alzheimer
 
-Proyecto grupal de para el programa de "programación con BEDU" que consiste en el análisis de datos con el fin de generar un modelo de predicción que permita indicar de forma tentativa la posibilidad de que el paciente desarrolle en un futuro la enfermedad de Alzheimer.
+Proyecto grupal de para el programa de "programación con BEDU" que consiste en el análisis de datos con el fin de generar un modelo de predicción que permita indicar de forma tentativa la posibilidad de que un paciente desarrolle en un futuro la enfermedad de Alzheimer.
 
 ## Índice
 
@@ -46,7 +46,58 @@ Por lo anterior, sería conveniente tener un sistema que, si bien no diagnostiqu
 
 ## Datos 📃
 
-Para este análisis se hizo uso de dos datasets publicados por la _Open Access Series of Imaging Studies_ (OASIS) en su [sitio web](https://www.oasis-brains.org/#data).
+Para este análisis se hizo uso de dos datasets publicados por el _Open Access Series of Imaging Studies_ (OASIS) _Project_ en su [sitio web](https://www.oasis-brains.org/#data).
 El proyecto OASIS Brains tiene por objetivo facilitar los descubrimientos en neurociencia básica y clínica mediante el análisis de datos.
 
 ### Descripción de los datasets
+
+
+Para este proyecto hacemos uso de dos datasets: el [Cross-sectional MRI Data](https://www.oasis-brains.org/#data) y el [Longitudinal MRI Data](https://www.oasis-brains.org/#data).
+
+#### Cross-sectional MRI Data
+* Consiste en una colección transversal de 416 sujetos con edades entre los 18 y los 96 años, incluyendo individuos con la enfermedad de Alzheimer en etapa temprana.
+* Para cada sujeto, se incluyen 3 o 4 resonancias magnéticas ponderadas en T1 individuales obtenidas en una sola sesión de imágenes.
+* Todos los sujetos son diestros e incluyen hombres y mujeres.
+* 100 de los sujetos incluidos mayores de 60 años han sido diagnosticados con la enfermedad de Alzheimer muy leve a leve.
+* Para 20 de los sujetos no dementes, las imágenes de una sesión de exploración posterior después de un breve retraso (menos de 90 días) también se incluyen como un medio para evaluar la confiabilidad de la adquisición.
+
+#### Longitudinal MRI Data
+* Consiste en una colección longitudinal de 150 sujetos con edades entre los 60 y los 96 años.
+* Cada sujeto fue escaneado en dos o más visitas, separadas por al menos un año para un total de 373 sesiones de imágenes.
+* Todos los sujetos son diestros e incluyen hombres y mujeres.
+* 72 de los sujetos se caracterizaron como no dementes durante todo el estudio. 
+* 64 de los sujetos incluidos se caracterizaron como dementes en el momento de sus visitas iniciales y permanecieron así para las exploraciones posteriores, incluidos 51 individuos con enfermedad de Alzheimer leve a moderada. 
+* Otros 14 sujetos se caracterizaron como no dementes en el momento de su visita inicial y posteriormente se caracterizaron como dementes en una visita posterior.
+
+### Descripción de las columnas
+
+| COLUMNA | DESCRIPCIÓN 
+| -- | -- 
+| M/F | Género 
+| Hand | Mano dominante 
+| Age | Edad 
+| Educ | Nivel de estudios 
+| SES | Nivel socioeconómico 
+| MMSE | Puntaje en Mini Examen de Estado Mental 
+| CDR | Nivel de Demencia Clínica  
+| eTIV | Volumen intracraneal total estimado 
+| ASF | Factor de escala Atlas
+| nWBV | Volumen cerebral total normalizado
+
+### Variables
+
+La información con la que contamos del dataset es la siguiente:
+
+**Demográfica**.- Existen 5 variables del tipo demográfico: Género (Gender, M/F), Mano dominante (Hand, R), Edad (Age), Educación (Educ) y estatus socioeconómico (SES). Las variables de educación y estatus socioeconómico tienen un valor discreto entre 1 y 5, en el caso de educación los valores representan: 
+1 - Menos de graduación de preparatoria, 
+2 - Graduación de preparatoria, 
+3 - Algo de estudio universitario, 
+4 - Graduado universitario, 
+5 - Superior a estudios universitarios. En el caso del indicador socioeconómico: 1 - Clase baja, 2 - Clase media-baja, 3 - Clase media, 4 - Clase media-alta, 5 - Clase Alta.
+
+**Clínica**.- Se tienen 2 variables: Mini-Mental State Examination (MMSE, 0-30) e índice clínico de demencia (Clinical Dementia Rating, CDR, 0-3). El MMSE es un examen de 30 preguntas para evaluar las habilidades cognitivas de un paciente, el cual sirve para indicar la presencia de algún impedimento cognitivo, más no para diagnosticar algún desorden. 
+El CDR es una escala utilizada para cuantificar la gravedad (etapa) de los síntomas de demencia, teniendo una escala de: 0 - ninguno, 0.5 - muy ligero, 1 - ligero, 2 - moderado, 3 - severo. Cualquier participante con un CDR mayor a 0.5 fue diagnosticado con probable enfermedad de Alzheimer. Ningún paciente fue evaluado con un CDR de 3.
+
+**Volúmenes anatómicos estimados**.- Hay 3 variables: Volumen intracraneal total estimado (Estimated total intracranial volume, eTIV, mm3), Factor de escala atlas (Atlas scaling factor, ASF) y Volumen cerebral completo normalizado (Normalized whole brain volume, nWBV).
+
+**Longitudinales**.- El dataset longitudinal presenta unas cuantas variables extras: Group (Nondemented, Demented o Converted), el cual es un dato basado en el CDR y documenta si el paciente jamás presento demencia, inicio con ella o sí la desarrollo en el tiempo transcurrido en el estudio; Visit, el cual indica el número de la visita para un paciente; MR Delay, días entre la primera y la 'n' sesión.
