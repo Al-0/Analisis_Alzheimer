@@ -1,47 +1,110 @@
-# install.packages('tidyverse')
+# install.packages("tidyverse")
 library(ggplot2)
 
-# install.packages('dplyr')
+# install.packages("dplyr")
 library(dplyr)
 
-# install.packages('gganimate')
+# install.packages("gganimate")
 library(gganimate)
 
-# Lectura de Datos de los Archivos
-cross_sectional <- read.csv('oasis_cross-sectional.csv')
-longitudinal <- read.csv('oasis_longitudinal.csv')
+# Lectura y Limpieza de los Datos
+cross_sectional <- read.csv("oasis_cross-sectional.csv") %>%
+  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
+  select(- Delay, - Hand, - eTIV, - nWBV, - ASF)
 
-## Generaci髇 de las Im醙enes para Crear el GIF
+longitudinal <- read.csv("oasis_longitudinal.csv") %>%
+  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
+  select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
 
-# Evoluci髇 del Alzheimer en Pacientes Sanos
+## Generaci贸n de las Im谩genes para Crear el GIF
+
+# Evoluci贸n del Alzheimer en Pacientes Sanos
 graph.data <- longitudinal %>%
   select(Subject.ID, Group, Visit, M.F, Age, CDR) %>%
-  filter(Group == 'Converted') %>%
-  mutate(Group = NULL, M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
+  filter(Group != "Demented") %>%
+  mutate(Group = NULL) %>%
   ggplot(aes(CDR, Age, colour = Subject.ID)) +
   geom_point(alpha = 0.7, show.legend = FALSE) +
   facet_wrap(~ M.F) +
   xlim(0, 2) +
-  labs(title = 'Evoluci髇 de la Enfermedad de Alzheimer (Pacientes Sanos)', subtitle = 'N鷐ero de Visita: {frame_time}', x = 'Indice de Demencia Cl韓ica', y = 'Edad') +
+  labs(subtitle = "N煤mero de Visita: {frame_time}", x = "Indice de Demencia Cl铆nica", y = "Edad") +
   transition_time(Visit) +
-  ease_aes('linear')
-animate(graph.data, renderer = gifski_renderer('CDRvsAge-1.gif'))
+  ease_aes("linear")
+animate(graph.data, renderer = gifski_renderer("./shinyapp/Alzheimer/www/longitudinal/long_converted.gif"))
 
-# Evoluci髇 de Alzheimer en Pacientes con Demencia
+# Obtenci贸n del % de la poblaci贸n que representa el grupo de pacientes que desarrollaron Alzheimer
+n_converted <- longitudinal %>%
+  filter(Group == "Converted", Visit == 1) %>%
+  nrow()
+
+n_nondemented <- longitudinal %>%
+  filter(Group == "Nondemented", Visit == 1) %>%
+  nrow()
+
+round(n_converted / (n_converted + n_nondemented) * 100, 3)
+
+# Obtenci贸n del % de la poblaci贸n afectada de cada g茅nero
+n_converted_F <- longitudinal %>%
+  filter(Group == "Converted", M.F == "Femenino", Visit == 1) %>%
+  nrow()
+
+n_converted_M <- longitudinal %>%
+  filter(Group == "Converted", M.F == "Masculino", Visit == 1) %>%
+  nrow()
+
+round(((n_converted_F / 14) * n_converted / (n_converted + n_nondemented)) * 100, 3) # G茅nero Femenino
+
+round(((n_converted_M / 14) * n_converted / (n_converted + n_nondemented)) * 100, 3) # G茅nero Masculino
+
+# Evoluci贸n de Alzheimer en Pacientes con Demencia
 graph.data <- longitudinal %>%
-  filter(Group != 'Nondemented') %>%
+  filter(Group != "Nondemented") %>%
   select(Subject.ID, Visit, M.F, Age, CDR) %>%
-  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
   ggplot(aes(CDR, Age, colour = Subject.ID)) +
   geom_point(alpha = 0.7, show.legend = FALSE) +
   facet_wrap(~ M.F) +
   xlim(0, 2) +
-  labs(title = 'Evoluci髇 de la Enfermedad de Alzheimer (Pacientes con Demencia)', subtitle = 'N鷐ero de Visita: {frame_time}', x = 'Indice de Demencia Cl韓ica', y = 'Edad') +
+  labs(subtitle = "N煤mero de Visita: {frame_time}", x = "Indice de Demencia Cl铆nica", y = "Edad") +
   transition_time(Visit) +
-  ease_aes('linear')
-animate(graph.data, renderer = gifski_renderer('CDRvsAge-2.gif'))
+  ease_aes("linear")
+animate(graph.data, renderer = gifski_renderer("./shinyapp/Alzheimer/www/longitudinal/long_demented.gif"))
 
-# An醠isis Financiero
+# Obtenci贸n del % de la poblaci贸n que desarrollo un cuadro cl铆nico severo de demencia
+subjects <- longitudinal %>%
+  filter(CDR == 2) %>%
+  select(Subject.ID)
+
+n_demented_severe <- longitudinal %>%
+  filter(Subject.ID %in% subjects$Subject.ID) %>%
+  select(Subject.ID, M.F, Visit, CDR) %>%
+  group_by(Subject.ID) %>%
+  mutate(Min_CDR = min(CDR), Max_CDR = max(CDR)) %>%
+  as.data.frame() %>%
+  filter(Visit == 1) %>%
+  select(Subject.ID, M.F, Min_CDR, Max_CDR)
+
+n_demented = longitudinal %>% 
+  filter(Group != "Nondemented", Visit == 1) %>%
+  nrow()
+
+round(nrow(n_demented_severe) / n_demented * 100, 3)
+
+# Obtenci贸n del % de la poblaci贸n de cada g茅nero que desarrolla un cuadro cl铆nico severo de demencia
+round(((table(n_demented_severe$M.F) / nrow(n_demented_severe)) * (nrow(n_demented_severe) / n_demented)) * 100, 3)
+
+# Obtenci贸n del % de la poblaci贸n que no sigue desarrollando Alzheimer
+n_demented_neutral <- longitudinal %>%
+  group_by(Subject.ID) %>%
+  filter(min(CDR) == max(CDR)) %>%
+  as.data.frame() %>%
+  filter(CDR > 0, Visit == 1)
+
+round((nrow(n_demented_neutral) / n_demented) * 100, 3) 
+
+# Obtenci贸n del % de la poblaci贸n por g茅nero que no sigue desarrollando Alzheimer
+round(((table(n_demented_neutral$M.F) / nrow(n_demented_neutral)) * (nrow(n_demented_neutral) / n_demented)) * 100, 3)
+
+# An谩lisis Financiero
 longitudinal %>%
   select(Subject.ID, Visit, SES, EDUC) %>%
   na.omit() %>%
@@ -52,56 +115,70 @@ longitudinal %>%
   as.data.frame() %>%
   ggplot(aes(SES, EDUC, group = Visitas)) +
   geom_point(aes(color = Visitas)) +
-  ggtitle('An醠isis Financiero', subtitle = 'N鷐ero de Visitas seg鷑 el Nivel Socioecon髆ico') +
-  xlab('Nivel Socioecon髆ico') +
-  ylab('A駉s de Estudio')
+  facet_wrap(~ Visitas)
+  # ggtitle(subtitle = "N煤mero de Visitas seg煤n el Nivel Socioecon贸mico") +
+  xlab("Nivel Socioecon贸mico") +
+  ylab("A帽os de Estudio")
 
-## Gr醘icas de Pastel
+## Gr谩ficas de Pastel
 
-# G閚ero
+# G茅nero
 as.data.frame(table(longitudinal$M.F) / nrow(longitudinal)) %>%
-  mutate(Var1 = ifelse(Var1 == 'F', 'Femenino', 'Masculino')) %>%
-  rename(G閚ero = Var1) %>%
-  ggplot(aes(x = '', y = Freq, fill = G閚ero)) +
-  geom_bar(stat = 'identity', color = 'white') +
-  coord_polar(theta = 'y') +
-  scale_fill_manual(values = c('hotpink', 'blue')) +
+  rename(Genero = Var1) %>%
+  ggplot(aes(x = "", y = Freq, fill = Genero)) +
+  geom_bar(stat = "identity", color = "white") +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = c("hotpink", "blue")) +
   theme_void() +
-  labs(title = 'Enfermedad de Alzheimer', subtitle = 'Distribuci髇 del G閚ero')
+  labs(subtitle = "Distribuci贸n del G茅nero")
 
-# N鷐ero de Visitas
+# N煤mero de Visitas
 as.data.frame(table(longitudinal$Age, longitudinal$CDR) / nrow(longitudinal)) %>%
   rename(Age = Var1, CDR = Var2, Probability = Freq) %>%
   ggplot(aes(x = CDR, y = Age, fill = Probability)) +
   geom_tile() +
-  scale_fill_gradient(name = 'Probabilidad', low = 'white', high = 'blueviolet') +
-  ggtitle('Enfermedad de Alzheimer', subtitle = 'Probabilidad Conjunta') +
-  xlab('Indice de Demencia Cl韓ica') +
-  ylab('Edad')
+  scale_fill_gradient(name = "Probabilidad", low = "white", high = "blueviolet") +
+  ggtitle(subtitle = "Probabilidad Conjunta") +
+  xlab("Indice de Demencia Cl铆nica") +
+  ylab("Edad")
 
-# Gr醘ico Animado MMSE vs CDR
+# Gr谩fico Animado MMSE vs CDR
 graph.data <- longitudinal %>%
-  filter(Subject.ID == 'OAS2_0087') %>%
+  filter(Subject.ID == "OAS2_0087") %>%
   ggplot(aes(x = Visit, y = MMSE, group = Subject.ID, color = Subject.ID)) +
   geom_line() +
   geom_point(aes(shape = factor(CDR))) +
   xlim(min(longitudinal$Visit), max(longitudinal$Visit)) +
   ylim(0, 30) +
-  ggtitle('Enfermedad de Alzheimer', subtitle = 'Deterioro del Estado Mental') +
-  ylab('Mini Examen del Estado Mental') +
-  xlab('N鷐ero de Visita') +
+  ggtitle(subtitle = "Deterioro del Estado Mental") +
+  ylab("Mini Examen del Estado Mental") +
+  xlab("N煤mero de Visita") +
   transition_reveal(Visit)
-animate(graph.data, renderer = gifski_renderer('MMSEvsVisit.gif'))
+animate(graph.data, renderer = gifski_renderer("MMSEvsVisit.gif"))
 
-# Gr醘ico Completo MMSE vs CDR
+# Gr谩fico Completo MMSE vs CDR
 longitudinal %>%
-  filter(Subject.ID == 'OAS2_0087') %>%
+  filter(Subject.ID == "OAS2_0087") %>%
   ggplot(aes(x = Visit, y = MMSE, group = Subject.ID, color = Subject.ID)) +
   geom_line() +
   geom_point(aes(shape = factor(CDR))) +
   xlim(min(longitudinal$Visit), max(longitudinal$Visit)) +
   ylim(0, 30) +
   facet_wrap(~ Group) +
-  ggtitle('Enfermedad de Alzheimer', subtitle = 'Deterioro del Estado Mental') +
-  ylab('Mini Examen del Estado Mental') +
-  xlab('N鷐ero de Visita')
+  ggtitle("Enfermedad de Alzheimer", subtitle = "Deterioro del Estado Mental") +
+  ylab("Mini Examen del Estado Mental") +
+  xlab("N煤mero de Visita")
+
+graph.data <- longitudinal %>%
+  filter(Group == "Converted") %>%
+  ggplot(aes(x = Visit, y = CDR, group = Subject.ID, color = Subject.ID)) +
+  geom_line() +
+  geom_point() +
+  xlim(min(longitudinal$Visit), max(longitudinal$Visit)) +
+  ylim(min(longitudinal$CDR), max(longitudinal$CDR)) +
+  facet_wrap(~ M.F) +
+  ggtitle("Enfermedad de Alzheimer", subtitle = "Deterioro del Estado Mental") +
+  ylab("Indice de Demencia Cl铆nica") +
+  xlab("N煤mero de Visita") +
+  transition_reveal(Visit)
+animate(graph.data, renderer = gifski_renderer("CDRvsVisit.gif"))

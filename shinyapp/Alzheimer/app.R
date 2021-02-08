@@ -10,6 +10,7 @@
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
+library(dplyr)
 
 # Define UI for application
 ui <- fluidPage(
@@ -28,55 +29,55 @@ ui <- fluidPage(
         border-top-color: #FFF;
     }"
     ),
-    titlePanel("Enfermedad de Alzheimer. Análisis y modelado usando los datasets OASIS."),
-    theme = shinytheme("superhero"),
+    titlePanel(title = "Enfermedad de Alzheimer. Análisis y modelado usando los datasets OASIS."),
+    theme = shinytheme(theme = "superhero"),
     #shinythemes::themeSelector(), 
     dashboardPage(
         dashboardHeader(title = "Navegación"),
         skin = "purple",
         dashboardSidebar(
             sidebarMenu(
-                menuItem("Introducción",
+                menuItem(text = "Introducción",
                          tabName = "intro",
                          icon = icon(
                              name = "file-medical",
                              lib = "font-awesome")),
-                menuItem("Justificación",
+                menuItem(text = "Justificación",
                          tabName = "just",
                          icon = icon(
                              name = "align-justify",
                              lib = "font-awesome")),
-                menuItem("Alzheimer en México",
+                menuItem(text = "Alzheimer en México",
                          tabName = "mex",
                          icon = icon(
                              name = "flag",
                              lib = "font-awesome")),
-                menuItem("Dataset OASIS",
+                menuItem(text = "Dataset OASIS",
                          tabName = "oasis",
                          icon = icon(
                              name = "database",
                              lib = "font-awesome")),
-                menuItem("Limpieza de datos",
+                menuItem(text = "Limpieza de Datos",
                          tabName = "limpieza",
                          icon = icon(
                              name = "broom",
                              lib = "font-awesome")),
-                menuItem("Análisis Exploratorio",
+                menuItem(text = "Análisis Exploratorio",
                          tabName = "aed",
                          icon = icon(
                              name = "chart-bar",
                              lib = "font-awesome")),
-                menuItem("Modelo de predicción",
+                menuItem(text = "Modelo de Predicción",
                          tabName = "pred",
                          icon = icon(
                              name = "project-diagram",
                              lib = "font-awesome")),
-                menuItem("Presentación",
+                menuItem(text = "Presentación",
                          tabName = "pres",
                          icon = icon(
                              name = "youtube",
                              lib = "font-awesome")),
-                menuItem("Referencias",
+                menuItem(text = "Referencias",
                          tabName = "ref",
                          icon = icon(
                              name = "list-ul",
@@ -91,7 +92,7 @@ ui <- fluidPage(
                     fluidRow(
                         column(
                             width = 10,
-                            titlePanel(h1("La enfermedad de Alzheimer", align = "center")),
+                            titlePanel(h1("La Enfermedad de Alzheimer", align = "center")),
                             
                             br(),
                             h2("¿Qué es el Alzheimer?"),
@@ -129,7 +130,7 @@ ui <- fluidPage(
                     fluidRow(
                         tabsetPanel(
                                 tabPanel(
-                                    title = "Situación actual",
+                                    title = "Situación Actual",
                                     column(
                                         width = 10,
                                         
@@ -184,12 +185,12 @@ ui <- fluidPage(
                             tabPanel(
                                 title = "OASIS 1: Cross-sectional",
                                 titlePanel(h1("OASIS-1: Cross-sectional MRI Data in Young, Middle Aged, Nondemented and Demented Older Adults", align = "center")),
-                                dataTableOutput("sectional_table")
+                                dataTableOutput(outputId = "sectional_table")
                             ),
                             tabPanel(
                                 title = "OASIS 2: Longitudinal",
                                 titlePanel(h1("OASIS-2: Longitudinal MRI Data in Nondemented and Demented Older Adults", align = "center")),
-                                dataTableOutput("longitudinal_table")
+                                dataTableOutput(outputId = "longitudinal_table")
                             )
                         )
                     )
@@ -197,21 +198,88 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "aed",
                     fluidRow(
-                        titlePanel(h3("Análisis Exploratorio", align = "center")),
+                        titlePanel(h2("Análisis Exploratorio de Datos", align = "center")),
                         tabsetPanel(
                             tabPanel(
-                                title = "Distribución de Género",
+                                title = "Análisis del Conjunto de Datos Longitudinal",
                                 br(),
-                                column(
-                                    width = 5,
-                                    fluidRow(selectInput("cake_group", "Selecciona un grupo de tu interés", choices = c("All", unique(read.csv("oasis_longitudinal.csv")$Group)))),
-                                    fluidRow(h4("Prueba")),
-                                    offset = 1
-                                ),
-                                column(
-                                    width = 5,
-                                    plotOutput("cake_graph_output")
-                                )
+                                fluidRow(
+                                    column(
+                                        width = 10,
+                                        includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_header.md"),
+                                        offset = 1)),
+                                br(),
+                                fluidRow(
+                                    column(
+                                        width = 5,
+                                        fluidRow(
+                                            selectInput(
+                                                inputId = "cake_group",
+                                                label = h4("Selecciona un grupo de tu interés"),
+                                                choices = c("Todos los pacientes" = "All", "Saludables" = "Nondemented", "Sospechosos" = "Converted", "Dementes" = "Demented"))),
+                                        fluidRow(),
+                                        offset = 1),
+                                    column(
+                                        width = 5,
+                                        plotOutput(outputId = "cake_graph_output"))),
+                                br(),
+                                fluidRow(
+                                    column(
+                                        width = 10,
+                                        includeMarkdown("./www/longitudinal/markdowns/long_evolution_header.md"),
+                                        offset = 1)),
+                                br(),
+                                fluidRow(
+                                    column(
+                                        width = 5,
+                                        fluidRow(
+                                            fluidRow(
+                                                selectInput(
+                                                    inputId = "selected_graph",
+                                                    label = h4("Selecciona un gráfico"),
+                                                    choices = c("Desarrollo en pacientes sanos" = "Converted", "Progreso en pacientes afectados" = "Demented"))),
+                                            fluidRow(
+                                                conditionalPanel(
+                                                    condition = "input.selected_graph == 'Converted'",
+                                                    includeMarkdown("./www/longitudinal/markdowns/long_evolution_converted.md")
+                                                ),
+                                                conditionalPanel(
+                                                    condition = "input.selected_graph == 'Demented'",
+                                                    includeMarkdown("./www/longitudinal/markdowns/long_evolution_demented.md")
+                                                )
+                                            )
+                                        ),
+                                        offset = 1),
+                                    column(
+                                        width = 5,
+                                        conditionalPanel(
+                                            condition = "input.selected_graph == 'Converted'",
+                                            img(src = "./longitudinal/long_converted.gif")
+                                        ),
+                                        conditionalPanel(
+                                            condition = "input.selected_graph == 'Demented'",
+                                            img(src = "./longitudinal/long_demented.gif")
+                                        ))),
+                                br(),
+                                fluidRow(
+                                    column(
+                                        width = 10,
+                                        includeMarkdown("./www/longitudinal/markdowns/long_socioeconomic_analysis_header.md"),
+                                        offset = 1)),
+                                br(),
+                                fluidRow(
+                                    column(
+                                        width = 5,
+                                        fluidRow(
+                                            selectInput(
+                                                inputId = "socioeconomic_analysis_selected_facet_wrap",
+                                                label = h4("Selecciona un grupo de tu interés"),
+                                                choices = c("Todos los pacientes" = "All", "Pacientes con 5 visitas" = "5", "Pacientes con 4 visitas" = "4", "Pacientes con 3 visitas" = "3", "Pacientes con 2 visitas" = "2"))),
+                                        fluidRow(),
+                                        offset = 1),
+                                    column(
+                                        width = 5,
+                                        plotOutput(outputId = "analysis_selected_facet_wrap_output"))),
                             )
                         )
                     )
@@ -229,7 +297,7 @@ ui <- fluidPage(
                     fluidRow(
                         column(
                             width = 10,
-                            includeMarkdown("README.md"),
+                            # includeMarkdown("README.md"),
                             offset = 1
                         )
                     )
@@ -269,7 +337,7 @@ server <- function(input, output) {
     
     # Muestra la distribución del género de los pacientes según el grupo al que pertenecen
     output$cake_graph_output <- renderPlot({
-        data_group <- ifelse(input$cake_group == "All", unique(new_longitudinal$Group), input$cake_group)
+        data_group <- ifelse(input$cake_group == "All", c(unique(new_longitudinal$Group)), input$cake_group)
         data_longitudinal <- new_longitudinal %>%
             filter(Group %in% data_group, Visit == 1)
         as.data.frame(table(data_longitudinal$M.F) / nrow(data_longitudinal)) %>%
@@ -279,6 +347,27 @@ server <- function(input, output) {
             coord_polar(theta = "y") +
             scale_fill_manual(values = c("hotpink", "blue")) +
             theme_void()
+    })
+    
+    # Muestra la dispersión de los pacientes en base a su nivel socioeconómico
+    output$analysis_selected_facet_wrap_output <- renderPlot({
+        if(input$socioeconomic_analysis_selected_facet_wrap == "All") {
+            new_longitudinal %>%
+                select(Subject.ID, Visit, SES, EDUC) %>%
+                na.omit() %>%
+                group_by(Subject.ID) %>%
+                summarise(Visitas = max(Visit), SES, EDUC) %>%
+                mutate(Visitas = factor(Visitas)) %>%
+                unique() %>%
+                as.data.frame() %>%
+                ggplot(aes(SES, EDUC, group = Visitas)) +
+                geom_point(aes(color = Visitas)) +
+                # facet_wrap(~ Visitas) +
+                xlab("Nivel Socioeconómico") +
+                ylab("Años de Estudio")
+        } else {
+            
+        }
     })
 }
 
