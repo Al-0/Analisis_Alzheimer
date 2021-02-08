@@ -8,11 +8,15 @@ Daniel S. Marcus, et al. Corss-Sectional Data Across The Adult Lifespan. https:/
 
 Lawrence V. Fulton, et al. Classification of Alzheimer’s Disease with and without Imagery Using Gradient Boosted Machines and ResNet-50. https://www.mdpi.com/2076-3425/9/9/212/htm. Accessed February 7, 2021.
 
+Gutiérrez R. Luis Miguel, et al. (2017). La Enfermedad de Alzheimer y otras demencias como problema nacional de salud. https://www.anmm.org.mx/publicaciones/ultimas_publicaciones/ANM-ALZHEIMER.pdf. Accessed February 7, 2021.
+
 Mayo Clinic. (2020). Enfermedad de Alzheimer. https://www.mayoclinic.org/es-es/diseases-conditions/alzheimers-disease/diagnosis-treatment/drc-20350453. Accessed February 7, 2021.
 
 Neus Falgas Martínez, et al. (2018). Pronóstico Alzheimer. https://www.clinicbarcelona.org/asistencia/enfermedades/alzheimer/evolucion-de-la-enfermedad. Accessed February 7, 2021.
 
 OASIS. (2020). OASIS Brains Project. https://www.oasis-brains.org/ Accessed February 7, 2021.
+
+Secretaría de Salud. (2017). Género y salud en cifras. https://www.gob.mx/cms/uploads/attachment/file/315224/revista_15-3-1.pdf. Accessed February 7,2021.
 
 Texas Department of State Health Services. (2018). What is Alzheimer's Disease? Questions and Answers. https://dshs.texas.gov/alzheimers/qanda.shtm. Accessed February 7, 2021.
 
