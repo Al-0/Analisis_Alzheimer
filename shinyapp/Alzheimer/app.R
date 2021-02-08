@@ -141,7 +141,7 @@ ui <- fluidPage(
                                         h4("En la actualidad hay más de 13 millones de adultos mayores de 60 años en México. Se estima que para el año 2050 si no es que antes el número de mexicanos afectados por la Enfermedad de Alzheimer será de más de 3.5 millones."),
                                         h4("Considerando que estamos por desgracia entre los primeros lugares en obesidad y diabetes mellitus a nivel mundial y que los factores de riesgo del síndrome metabólico contribuyen a que entre las primeras cinco causas de morbi-mortalidad estén la diabetes, las enfermedades cardiovascu- lares y el evento vascular cerebral no será sorprendente que no nada más disminuya el incremento de la longevidad proyectada para el 2050 que es de 80-83 años para hombres y mujeres sino que seguramente veremos un incremento en el deterioro cognitivo vascular y mixto."),
                                         img(src = "AlzheimerMex.jpg", height = 200, width = 440, style="display: block; margin-left: auto; margin-right: auto;"),
-                                        h4("Es por este motivo entre muchos que México y sus profesionales de la salud se han encomendado a la tarea de hacer hincapié de la problemática que se nos avecina de ahí la importancia de una obra como la presente"),
+                                        h4("Es por este motivo entre muchos que México y sus profesionales de la salud se han encomendado a la tarea de hacer hincapié de la problemática que se nos avecina de ahí la importancia de una obra como la presente."),
                                         
                                         offset = 1
                                     )   
@@ -196,9 +196,44 @@ ui <- fluidPage(
                     )
                 ),
                 tabItem(
+                    tabName = "limpieza",
+                    fluidRow(
+                        tabsetPanel(
+                            tabPanel(
+                                title = "Desarrollo",
+                                column(
+                                    width = 10,
+                                    
+                                    titlePanel(h1("Limpieza de datos.", align = "center")),
+                                    br(),   
+                                    h2(strong("Cross Sectional")),
+                                    h4("Para utilizar el csv provisto no fue necesario realizar una gran cantidad de modificaciones, sólo prescindir de ciertas columnas y filas. Por un lado, la variable 'Hand' fue removida, ya que todos los pacientes del conjunto de datos son diestros y por lo tanto esta variable no colabora información relevante."),
+                                    h4("Por otro lado, la variable Delay es N/A para todas las entradas, excepto las últimas 20. Esto se debe a que los últimos 20 datos son datos de fiabilidad, en los que 20 pacientes sin demencia volvieron a tomar los estudios clínicos en un lapso no mayor a 90 días. Estos datos no serán considerados para el estudio, debido a que lo único que cambia en ellos son las variables anatómicas."),
+                                    h4("Relacionado a la decisión de excluir los datos de fiabilidad en base a su componente anatómico, las 3 columnas de este campo no serán utilizadas en el presente proyecto. La razón de no incluir estas variables se debe a que su uso debe de ir acompañado de imágenes de resonancia magnética para su correcta interpretación y uso. Si bien, podríamos utilizarlo como variables de interés en la construcción de nuestro modelo, la veracidad de usar estas variables fuera de su uso verdadero pone en tela de juicio la validez de cualquier modelo generado."),
+                                    br(),
+                                    h2(strong("Longitudinal")),
+                                    h4("Los mismos criterios para las variables anatómicas y mano se aplican a este dataset. Por otro lado, se prescinde de utilizar la variable de MR_Delay, optando por utilizar la edad de los pacientes para determinar la evolución de la condición según sea necesario. Adicionalmente se mutó la columna de género para declarar a cada paciente como 'Masculino' o 'Femenino'."),
+                                    h4("Una pequeña corrección fue hecha al paciente 'OAS2_0036', el cuál tenía un conteo de visitas hasta 5 pero sin información para su segunda visita. Se modificó el conteo de visitas reflejar el hecho que sólo tuvo 4 sesiones."),
+                                    
+                                    offset = 1,
+                                )
+                            ),
+                            tabPanel(
+                                title = "OASIS 1: Clean Cross-sectional",
+                                titlePanel(h1("OASIS-1: Cross-sectional MRI Data in Young, Middle Aged, Nondemented and Demented Older Adults", align = "center")),
+                                dataTableOutput("clean_sectional_table")
+                            ),
+                            tabPanel(
+                                title = "OASIS 2: Clean Longitudinal",
+                                titlePanel(h1("OASIS-2: Longitudinal MRI Data in Nondemented and Demented Older Adults", align = "center")),
+                                dataTableOutput("clean_longitudinal_table")
+                            )
+                        )
+                    )
+                ),
+                tabItem(
                     tabName = "aed",
                     fluidRow(
-                        titlePanel(h2("Análisis Exploratorio de Datos", align = "center")),
                         tabsetPanel(
                             tabPanel(
                                 title = "Análisis del Conjunto de Datos Longitudinal",
@@ -280,6 +315,52 @@ ui <- fluidPage(
                                     column(
                                         width = 5,
                                         plotOutput(outputId = "analysis_selected_facet_wrap_output"))),
+                                column(
+                                    width = 5,
+                                    fluidRow(selectInput("cake_group", "Selecciona un grupo de tu interés", choices = c("All", unique(read.csv("oasis_longitudinal.csv")$Group)))),
+                                    fluidRow(h4("Prueba")),
+                                    offset = 1
+                                ),
+                                column(
+                                    width = 5,
+                                    plotOutput("cake_graph_output")
+                                )
+                            ),
+                            tabPanel(
+                                title="Análisis Cross-sectional",
+                                column(
+                                    width = 10,
+                                    h4("En primera instancia es preciso analizar a los pacientes en base a su edad, considerando que la edad suele considerarse el factor más importante para el desarrollo de la enfermedad."),
+                                    br(),
+                                    img(src = "cross_edad.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Efectivamente, es posible apreciar que ninguno de los individuos con una edad menor a los 60 años (precisamente, 62 años) padece de la enfermedad en la población estudiada. Esto tiene sentido, ya que si bien la enfermedad no es exclusiva en pacientes de edad avanzada, los estudios médicos indican que la probabilidad de desarrollar Alzheimer a una temprana edad son sumamente bajas. Con esto en mente proseguimos a filtrar cualquier persona con una edad menor a 62 años."),
+                                    br(),
+                                    h4("Para obtener la gráfica anterior fue necesario clasificar a los pacientes en términos de demencia, para lo cual se crearon 2 grupos: el de 'Demented' para cualquier persona con CDR arriba de 0 y el de 'Non Demented' para personas con CDR de 0. Esta clasificación es similar a la usada en el dataset longitudinal. Analizando rápidamente esta variable, podemos notar lo siguiente:"),
+                                    br(),
+                                    img(src = "cross_dist.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Se puede apreciar una distribución de aproximadamente el 50% para personas con y sin demencia."),
+                                    h4("Proseguimos a analizar el género de nuestra población que padece del transtorno. Realizando una gráfica de pastel obtenemos lo siguiente:"),
+                                    br(),
+                                    img(src = "cross_genero.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("En el gráfico anterior se puede que la mayoría de los pacientes con el transtorno son mujeres, una relación de 60:40."),
+                                    offset = 1
+                                )
+                            ),
+                            tabPanel(
+                                title="Hipótesis",
+                                column(
+                                    width = 10,
+                                    br(),
+                                    h4("A través del análisis realizado sobre la población, se desarrollan ciertas hipótesis sobre la población a examinar:"),
+                                    tags$ul(
+                                        tags$li(h4(strong("La mayoría de los pacientes con algún estado de demencia son adultos mayores.- "), "Esta hipótesis se puede comprobar fácilmente observando la distribución de edades de los pacientes con o sin diagnóstico de demencia. Es imposible encontrar en el dataset personas menores de 60 años que presenten la condición, lo cuál es corroborado con los estudios de la enfermedad, los cuáles indican que la presencia de la enfermedad en personas jóvenes es sumamente extraña.")),
+                                        tags$li(h4(strong("Ser mujer implica una mayor probabilidad de desarrollar el transtorno.- "), "El análisis parece indicar que esta suposición es verdadera, puesto que el único grupo que presentó un mayor número de hombre que de mujeres fue el de las personas que comenzaron con demencia en el estudio longitudinal. La influencia exacta que tiene el género sobre el diagnóstico del paciente se estudiará en la sección de modelado, sin embargo, al analizar la literatura médica, es posible notar que el efecto del género probablemente es resultado de una falacia conocida como ", tags$i("Cum hoc ergo propter hoc, "), "lo cual implica que aunque dos variables tengan cierta correlación, esto no implica que una cause a la otra. La explicación de esto viene en el hecho de que, en promedio, la mujeres tienen una mayor expectativa de vida, y por lo tanto, es más probable que alcancen una edad en la que desarrollen un transtorno neurodegenerativo. Esto significa que el CDR y el género no estan relacionados directamente, sino que ambos tienen una relación con una tercera variable: la edad."))
+                                    ),
+                                    offset = 1
+                                )
                             )
                         )
                     )
@@ -287,7 +368,7 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "pres",
                     fluidRow(
-                        titlePanel(h3("Presentación del proceso y resultados obtenidos.", align = "center")),
+                        titlePanel(h1("Presentación del proceso y resultados obtenidos.", align = "center")),
                         br(),
                         HTML('<p align="center"><iframe width="700" height="400" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>')
                     )
@@ -321,18 +402,27 @@ server <- function(input, output) {
     longitudinal <- read.csv("oasis_longitudinal.csv")
     
     # Limpieza de Datos
-    new_longitudinal <- longitudinal %>%
-        mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
-        select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
+    new_longitudinal <- read.csv("longitudinal_clean.csv")
+    new_sectional <- read.csv("sectional_clean.csv")
     
     # Envia los datasets utilizados integramente al frontend y los muestra en una data table
     output$sectional_table <- renderDataTable(
         {sectional},
-        options = list(aLengthMenu = c(10, 20, 50, 100, 500), iDisplayLength = 10)
+        options = list(aLengthMenu = c(10, 20, 50, 100), iDisplayLength = 10)
     )
     output$longitudinal_table <- renderDataTable(
         {longitudinal},
-        options = list(aLengthMenu = c(10, 20, 50, 100, 500), iDisplayLength = 10)
+        options = list(aLengthMenu = c(10, 20, 50, 100), iDisplayLength = 10)
+    )
+    
+    # Envia los datasets limpios al frontend y los muestra en una data table
+    output$clean_sectional_table <- renderDataTable(
+        {new_sectional},
+        options = list(aLengthMenu = c(10, 20, 50, 100), iDisplayLength = 10)
+    )
+    output$clean_longitudinal_table <- renderDataTable(
+        {new_longitudinal},
+        options = list(aLengthMenu = c(10, 20, 50, 100), iDisplayLength = 10)
     )
     
     # Muestra la distribución del género de los pacientes según el grupo al que pertenecen

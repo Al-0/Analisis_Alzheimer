@@ -16,6 +16,12 @@ longitudinal <- read.csv("oasis_longitudinal.csv") %>%
   mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
   select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
 
+# Limpieza de datos
+longitudinal <- longitudinal %>%
+  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
+  select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
+write.csv(longitudinal,"longitudinal_clean.csv", row.names = FALSE)
+
 ## Generación de las Imágenes para Crear el GIF
 
 # Evolución del Alzheimer en Pacientes Sanos
@@ -27,7 +33,7 @@ graph.data <- longitudinal %>%
   geom_point(alpha = 0.7, show.legend = FALSE) +
   facet_wrap(~ M.F) +
   xlim(0, 2) +
-  labs(subtitle = "Número de Visita: {frame_time}", x = "Indice de Demencia Clínica", y = "Edad") +
+  labs(title = 'Evolución de la Enfermedad de Alzheimer (Pacientes Sanos)', subtitle = 'Número de Visita: {frame_time}', x = 'Indice de Demencia Clínica', y = 'Edad') +
   transition_time(Visit) +
   ease_aes("linear")
 animate(graph.data, renderer = gifski_renderer("./shinyapp/Alzheimer/www/longitudinal/long_converted.gif"))
