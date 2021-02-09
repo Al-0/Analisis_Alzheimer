@@ -143,8 +143,22 @@ gender_distribution_converted <- longitudinal %>%
   filter(Group == 'Converted', Visit == 1)
 round(table(gender_distribution_converted$M.F) / nrow(gender_distribution_converted) * 100, 3)
 
-#  Obtención del % de la población que se recuperó o fue diagnosticada incorrectamente
-##
+#  Obtención de la cantidad de la población que fue diagnosticada incorrectamente
+gender_distribution_converted_false <- longitudinal %>%
+  filter(Group == "Converted") %>%
+  group_by(Subject.ID) %>%
+  summarise(Subject.ID , State = list(CDR)) %>%
+  as.data.frame() %>%
+  unique()
+for(i in 1:nrow(gender_distribution_converted_false)) {
+  gender_distribution_converted_false$State[i] <- is.unsorted(unlist(x = gender_distribution_converted_false$State[i], use.names = FALSE))
+}
+gender_distribution_converted_false %>% filter(State == "TRUE")
+
+# Obtención del % de la población por género que fueron diagnósticados con demencia
+gender_distribution_demented <- longitudinal %>%
+  filter(Group == "Demented")
+round((table(gender_distribution_demented$M.F) / nrow(gender_distribution_demented)) * 100, 3)
 
 # Número de Visitas
 as.data.frame(table(longitudinal$Age, longitudinal$CDR) / nrow(longitudinal)) %>%

@@ -268,8 +268,8 @@ ui <- fluidPage(
                                                 includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_converted.md")
                                             ),
                                             conditionalPanel(
-                                                condition = "input.cake_group == 'Demented'"#,
-                                                #includeMarkdown("./www/longitudinal/markdowns/.md")
+                                                condition = "input.cake_group == 'Demented'",
+                                                includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_demented.md")
                                             )
                                         ),
                                         offset = 1),
