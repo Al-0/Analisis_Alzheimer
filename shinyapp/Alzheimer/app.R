@@ -463,6 +463,18 @@ ui <- fluidPage(
                                     h4("Este modelo fue entrenado con un subconjunto del dataset original. Al evaluar su efectividad  sobre las entradas que no fueron tomadas en cuenta para el entrenamiento, se obtuvo que este modelo puede predecir el estado de demencia en un paciente de manera correcta un ",strong("86% "), "de las veces."),
                                     br(),
                                     h4("Con este modelo, podemos asegurar que efectivamente existe una relación entre estas variables y el estado de demencia de los pacientes. Simple y sencillamente habíamos escogido el modelo equivocado en primera instancia."),
+                                    br(),
+                                    br(),
+                                    h2(strong("Modelo SVM interactivo"), align = "center"),
+                                    box(plotOutput("plot_svm", height = 500)),
+                                    box(
+                                        title = "Edad",
+                                        sliderInput("svm_age", "Años:", 40, 100, 50),
+                                    ),
+                                    box(
+                                        title = "MMSE",
+                                        sliderInput("svm_mmse", "Puntaje:", 15, 30, 22)
+                                    ),
                                     
                                     offset = 1
                                 )
@@ -501,6 +513,10 @@ server <- function(input, output) {
     
     # install.packages("dplyr")
     library(dplyr)
+    
+    # For tuning SVM
+    library(e1071) 
+    
     
     # Los datasets de OASIS utilizados para desarrollar el proyecto
     sectional <- read.csv("oasis_cross-sectional.csv")
@@ -611,12 +627,40 @@ server <- function(input, output) {
         {
             CDR_prediction <- 3
         }
-        points(CDR_estimate, y = CDR_prediction ,pch = 18, col = "blue", cex = 3)
+        points(x = CDR_estimate, y = CDR_prediction ,pch = 18, col = "blue", cex = 3)
     })
     
     
     ## Desarrollo del modelo de máquinas de vectores de soporte
+    sectional_demented <- new_sectional %>% mutate(Demented = ifelse(CDR > 0, "Demented", "Non demented")) %>% na.omit(sectional_demented)
+    dim(sectional_demented)
+    head(sectional_demented)
+    sectional_demented <- sectional_demented %>% mutate(num_var = ifelse(Demented == 'Demented', 1, -1));
+    dat2 <- sectional_demented %>% select(Age, MMSE, num_var) %>% rename(Demented = "num_var")
+    dat2$Demented <- as.factor(dat2$Demented)
+    set.seed(1980)
+    train <- sample(216, 100)
+    tune.out <- tune(svm, Demented~MMSE + Age, data = dat2[train, ], kernel = "radial", 
+                     ranges = list(cost = c(0.1, 1, 10, 100, 1000), 
+                                   gamma = c(0.5, 1, 2, 3, 4)))
+    svmfit <- svm(Demented~MMSE + Age, data = dat2[train, ], 
+                  kernel = "radial", cost = 1, gamma = 1, type = "C-classification")
     
+    # Creación del gráfico interactivo y predicción MSV del CDR
+    output$plot_svm <- renderPlot({
+        
+        plot(svmfit, dat2, ylim = c(14,31), xlim = c(40,100))
+        prediction <- predict(tune.out$best.model,data.frame(Age = input$svm_age, MMSE = input$svm_mmse))
+        if (prediction == 1)
+        {
+            color_pred = "blue"
+        }
+        else
+        {
+            color_pred = "green"
+        }
+        points(x = input$svm_age, y = input$svm_mmse, pch = 18, col = color_pred, cex = 3)
+    })
 }
 
 # Run the application 
