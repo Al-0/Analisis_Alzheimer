@@ -254,11 +254,29 @@ ui <- fluidPage(
                                                 inputId = "cake_group",
                                                 label = h4("Selecciona un grupo de tu interés"),
                                                 choices = c("Todos los pacientes" = "All", "Saludables" = "Nondemented", "Sospechosos" = "Converted", "Dementes" = "Demented"))),
-                                        fluidRow(),
+                                        fluidRow(
+                                            conditionalPanel(
+                                                condition = "input.cake_group == 'All'",
+                                                includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_all.md")
+                                            ),
+                                            conditionalPanel(
+                                                condition = "input.cake_group == 'Nondemented'",
+                                                includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_nondemented.md")
+                                            ),
+                                            conditionalPanel(
+                                                condition = "input.cake_group == 'Converted'",
+                                                includeMarkdown("./www/longitudinal/markdowns/long_age_distribution_converted.md")
+                                            ),
+                                            conditionalPanel(
+                                                condition = "input.cake_group == 'Demented'"#,
+                                                #includeMarkdown("./www/longitudinal/markdowns/.md")
+                                            )
+                                        ),
                                         offset = 1),
                                     column(
                                         width = 5,
-                                        plotOutput(outputId = "cake_graph_output"))),
+                                        plotOutput(outputId = "cake_graph_output"))
+                                    ),
                                 br(),
                                 fluidRow(
                                     column(
@@ -386,7 +404,7 @@ ui <- fluidPage(
                                     h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
                                     br(),  
                                     
-                                    offset =1 
+                                    offset = 1
                                 )
                             ),
                             tabPanel(
@@ -402,7 +420,7 @@ ui <- fluidPage(
                                     br(),
                                     h4("Este análisis nos permitió deseschar rápidamente la idea de utilizar los indicadores de eduación y socioeconómicos, así como el genero, esto debido a su alto p-value. Con esto en mente se creo un segundo modelo a partir de las 2 variables con p-values aceptables."),
                                     
-                                    offset =1 
+                                    offset = 1
                                 )
                             )
                         )
@@ -511,7 +529,6 @@ server <- function(input, output) {
                 geom_point(aes(color = Visitas)) +
                 xlab("Nivel Socioeconómico") +
                 ylab("Años de Estudio")
-            
         }
     })
 }
