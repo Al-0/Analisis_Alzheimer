@@ -400,7 +400,7 @@ ui <- fluidPage(
                                 column(
                                     width = 10,
                                     
-                                    titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
+                                    titlePanel(h1("Desarrollo de un modelo de predicción lineal del CDR", align = "center")),
                                     br(),
                                     h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
                                     br(),  
@@ -441,13 +441,28 @@ ui <- fluidPage(
                                 column(
                                     width = 10,
                                     
-                                    titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
+                                    titlePanel(h1("Desarrollo de un modelo SVM de predicción del CDR", align = "center")),
                                     br(),
-                                    h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
+                                    h4("Después de darnos cuenta que el modelo lineal no es realmente el indicado para el dataset con el que contamos, proseguimos a buscar otra alternativa. Mientras intentábamos encontrar un modelo que se ajustada con nuestros datos se obtuvo la siguiente gráfica:"),
                                     br(),  
-                                    img(src = "pred_modelo1.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    img(src = "pred_svm_clases.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
-                                    h4("Este análisis nos permitió deseschar rápidamente la idea de utilizar los indicadores de eduación y socioeconómicos, así como el genero, esto debido a su alto p-value. Con esto en mente se creó un segundo modelo a partir de las 2 variables con p-values aceptables."),
+                                    h4("Al observar detenidamente esta gráfica nos dimos cuenta de que los datos casi se encontraban divididos por clasificación en la parte superior del gráfico. Es entonces que decidimos aplicar el modelo de SVM al dataset, el cual genera una frontera que divide en grupos de clasificación una muestra poblacional con ciertos valores dentro de un plano."),
+                                    br(),
+                                    h4("Para utilizar este modelo utilizamos una serie de funciones matemáticas definidas como 'kernel', las cuales definen la forma con la que se crea la frontera de los datos. El primer kernel utilizado fue del tipo lineal, lo cual significa que la frontera sería una simple línea que divide el plano en 2 componentes."),
+                                    br(),
+                                    img(src = "pred_svm_lineal.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Este modelo, por más burdo que sea, puede predecir con una precisión de alrededor del ",strong("85% ")," la condición de un paciente en el dataset proporcionado."),
+                                    h4(tags$i("Nota: Los puntos rojos representan pacientes con demencias, los negros pacientes sin demencia. La zona roja es la zona en la que el modelo clasifica a un paciente con demencia, la blanca clasifica al paciente como sano. Las 'X' representan los 'vectores de soporte', mientras que las 'O' son puntos que no afectan el cálculo de la línea de frontera.")),
+                                    br(),
+                                    h4("Si bien, el modelo lineal fue más competente de lo esperado, a simple vista podemos apreciar que quizá una curva cumpla mejor las condiciones de clasificación que requiere este dataset. Por suerte, existe un kernel que provee una frontera de tipo curva, el kernel 'radial'. Al ajustar los parámetros de este modelo, obtuvimos que el siguiente SVM fue el mejor modelo obtenido a través del uso del kernel radial."),
+                                    br(),
+                                    img(src = "pred_svm_best.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Este modelo fue entrenado con un subconjunto del dataset original. Al evaluar su efectividad  sobre las entradas que no fueron tomadas en cuenta para el entrenamiento, se obtuvo que este modelo puede predecir el estado de demencia en un paciente de manera correcta un ",strong("86% "), "de las veces."),
+                                    br(),
+                                    h4("Con este modelo, podemos asegurar que efectivamente existe una relación entre estas variables y el estado de demencia de los pacientes. Simple y sencillamente habíamos escogido el modelo equivocado en primera instancia."),
                                     
                                     offset = 1
                                 )
@@ -598,6 +613,10 @@ server <- function(input, output) {
         }
         points(CDR_estimate, y = CDR_prediction ,pch = 18, col = "blue", cex = 3)
     })
+    
+    
+    ## Desarrollo del modelo de máquinas de vectores de soporte
+    
 }
 
 # Run the application 
