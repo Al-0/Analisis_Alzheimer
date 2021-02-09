@@ -7,17 +7,8 @@ library(dplyr)
 # install.packages("gganimate")
 library(gganimate)
 
-# Lectura y Limpieza de los Datos
-cross_sectional <- read.csv("oasis_cross-sectional.csv") %>%
-  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
-  select(- Delay, - Hand, - eTIV, - nWBV, - ASF)
-
-longitudinal <- read.csv("oasis_longitudinal.csv") %>%
-  mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
-  select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
-
 # Limpieza de datos
-longitudinal <- longitudinal %>%
+longitudinal <- read.csv("oasis_longitudinal.csv") %>%
   mutate(M.F = ifelse(M.F == 'F', 'Femenino', 'Masculino')) %>%
   select(- MR.Delay, - Hand, - eTIV, - nWBV, - ASF)
 write.csv(longitudinal,"longitudinal_clean.csv", row.names = FALSE)
@@ -122,7 +113,6 @@ longitudinal %>%
   ggplot(aes(SES, EDUC, group = Visitas)) +
   geom_point(aes(color = Visitas)) +
   facet_wrap(~ Visitas)
-  # ggtitle(subtitle = "Número de Visitas según el Nivel Socioeconómico") +
   xlab("Nivel Socioeconómico") +
   ylab("Años de Estudio")
 
@@ -137,6 +127,24 @@ as.data.frame(table(longitudinal$M.F) / nrow(longitudinal)) %>%
   scale_fill_manual(values = c("hotpink", "blue")) +
   theme_void() +
   labs(subtitle = "Distribución del Género")
+
+# Obtención del % de la población por género
+gender_distribution_all <- longitudinal %>%
+  filter(Visit == 1)
+round(table(gender_distribution_all$M.F) / nrow(gender_distribution_all) * 100, 3)
+
+# Obtención del % de la población por género, que no tiene problemas de demencia
+gender_distribution_nondemented <- longitudinal %>%
+  filter(Group == 'Nondemented', Visit == 1)
+round(table(gender_distribution_nondemented$M.F) / nrow(gender_distribution_nondemented) * 100, 3)
+
+# Obtención del % de la población por género, que desarrollan demencia
+gender_distribution_converted <- longitudinal %>%
+  filter(Group == 'Converted', Visit == 1)
+round(table(gender_distribution_converted$M.F) / nrow(gender_distribution_converted) * 100, 3)
+
+#  Obtención del % de la población que se recuperó o fue diagnosticada incorrectamente
+##
 
 # Número de Visitas
 as.data.frame(table(longitudinal$Age, longitudinal$CDR) / nrow(longitudinal)) %>%
