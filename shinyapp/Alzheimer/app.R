@@ -375,9 +375,37 @@ ui <- fluidPage(
                 tabItem(
                     tabName = "pred",
                     fluidRow(
-                        titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
-                        br(),
-                        h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR.")
+                        tabsetPanel(
+                            tabPanel(
+                                title = "Modelo Lineal",
+                                column(
+                                    width = 10,
+                                    
+                                    titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
+                                    br(),
+                                    h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
+                                    br(),  
+                                    
+                                    offset =1 
+                                )
+                            ),
+                            tabPanel(
+                                title = "Modelo de Máquinas de Vectores de Soporte",
+                                column(
+                                    width = 10,
+                                    
+                                    titlePanel(h1("Desarrollo de un modelo de predicción del CDR", align = "center")),
+                                    br(),
+                                    h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
+                                    br(),  
+                                    img(src = "pred_modelo1.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Este análisis nos permitió deseschar rápidamente la idea de utilizar los indicadores de eduación y socioeconómicos, así como el genero, esto debido a su alto p-value. Con esto en mente se creo un segundo modelo a partir de las 2 variables con p-values aceptables."),
+                                    
+                                    offset =1 
+                                )
+                            )
+                        )
                     )
                 ),
                 tabItem(
