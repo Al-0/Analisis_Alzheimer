@@ -487,7 +487,7 @@ ui <- fluidPage(
                     fluidRow(
                         titlePanel(h1("Presentación del proceso y resultados obtenidos", align = "center")),
                         br(),
-                        HTML('<p align="center"><iframe width="700" height="400" src="https://www.youtube.com/embed/T1-k7VYwsHg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>')
+                        HTML('<p align="center"><iframe width="700" height="400" src="https://www.youtube.com/embed/C4jlRF-7tIk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>')
                     )
                 ),
                 tabItem(
@@ -549,6 +549,10 @@ server <- function(input, output) {
     # Muestra la distribución del género de los pacientes según el grupo al que pertenecen
     output$cake_graph_output <- renderPlot({
         data_group <- ifelse(input$cake_group == "All", c(unique(new_longitudinal$Group)), input$cake_group)
+        if (data_group == 3)
+        {
+            data_group <- c("Nondemented", "Demented", "Converted")
+        }
         data_longitudinal <- new_longitudinal %>%
             filter(Group %in% data_group, Visit == 1)
         as.data.frame(table(data_longitudinal$M.F) / nrow(data_longitudinal)) %>%
@@ -567,6 +571,7 @@ server <- function(input, output) {
                 select(Subject.ID, Visit, SES, EDUC) %>%
                 na.omit() %>%
                 group_by(Subject.ID) %>%
+                rowwise() %>%
                 summarise(Visitas = max(Visit), SES, EDUC) %>%
                 mutate(Visitas = factor(Visitas)) %>%
                 unique() %>%
@@ -580,6 +585,7 @@ server <- function(input, output) {
                 select(Subject.ID, Visit, SES, EDUC) %>%
                 na.omit() %>%
                 group_by(Subject.ID) %>%
+                rowwise() %>%
                 summarise(Visitas = max(Visit), SES, EDUC) %>%
                 mutate(Visitas = factor(Visitas)) %>%
                 filter(Visitas == input$socioeconomic_analysis_selected_facet_wrap) %>%
