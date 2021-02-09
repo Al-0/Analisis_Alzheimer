@@ -30,8 +30,8 @@ summary(m)
 # Modelo lineal incluyendo solamente MMSE y Edad
 m2 <- lm(CDR ~ Age + MMSE)
 summary(m2)
-# Al aislar el modelo obtenemos un p-value más aceptable de la edad, con lo cuál podemos estar
-# satisfechos en incluirla en nuestro modelo predictor.
+# El p-value de edad deja algo que desear, pero considerando que el modelo no
+# es perfecto se tolera este error por interés de experimentar.
 
 # Gráficas residuales estandarizadas
 StanRes1 <- rstandard(m2)
