@@ -4,6 +4,8 @@ Proyecto grupal de para el programa de "programación con BEDU" que consiste en 
 
 ## Índice
 
+* Shinyapp Link: https://al-val.shinyapps.io/Alzheimer/
+* Video de la presentación: https://www.youtube.com/watch?v=C4jlRF-7tIk&feature=youtu.be
 
 ## Miembros del equipo 👥
 
