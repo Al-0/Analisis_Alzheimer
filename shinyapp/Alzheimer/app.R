@@ -11,6 +11,8 @@ library(shiny)
 library(shinydashboard)
 library(shinythemes)
 library(dplyr)
+# install.packages("markdown")
+library(markdown)
 
 # Define UI for application
 ui <- fluidPage(
