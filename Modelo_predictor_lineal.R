@@ -30,6 +30,7 @@ summary(m)
 # Modelo lineal incluyendo solamente MMSE y Edad
 m2 <- lm(CDR ~ Age + MMSE)
 summary(m2)
+m2$coefficients[1]
 # El p-value de edad deja algo que desear, pero considerando que el modelo no
 # es perfecto se tolera este error por interés de experimentar.
 

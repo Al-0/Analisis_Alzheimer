@@ -368,6 +368,7 @@ ui <- fluidPage(
                                     br(),
                                     h4("Analizando el gráfico obtenido podemos notar una fuerte correlación negativa entre una puntuación alta de MMSE y una puntuación baja de CDR. Sin embargo, existen pacientes que a pesar de tener un puntaje alto son diagnosticados con algún grado de demencia, lo cual comprueba lo estudiado en teoría, dando a entender que si bien la prueba es un fuerte indicador del estado del paciente, no garantiza un diagnóstico infalible para la predicción del Alzheimer."),
                                     
+                                    
                                     offset = 1
                                 )
                             ),
@@ -403,6 +404,34 @@ ui <- fluidPage(
                                     br(),
                                     h4("Con el análisis realizado creemos factible la realización de un modelo lineal para predecir el valor de CDR. Al realizar el modelo de regresión múltiple con todas las variables con las que contamos, utilizando el dataset cross-sectional, obtenemos lo siguiente:"),
                                     br(),  
+                                    img(src = "pred_modelo1.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Este análisis nos permitió desechar rápidamente la idea de utilizar los indicadores de educación y socioeconómicos, así como el género, esto debido a su alto p-value. Con esto en mente se creo un segundo modelo a partir de las 2 variables con p-values aceptables."),
+                                    br(),
+                                    img(src = "pred_modelo2.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("El p-value de edad deja algo que desear, pero debido a que la teoría respalda la edad como un fuerte indicador seremos una poco indulgente hacia su p-value."),
+                                    h4("El siguiente paso es analiza los valores residuales estandarizados del modelo creado para corroborar su veracidad:"),
+                                    br(),
+                                    img(src = "pred_resid.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    h4("Es aquí donde nuestro modelo lineal pierde su credibilidad. Se puede observar un patrón ligero en la gráfica de Edades, mientras que en la de MMSE el patrón resulta evidentemente claro. Esto nos indica que el modelo lineal no es el más indicado para este dataset, y que los resultados obtenidos no serán demasiado precisos."),
+                                    br(),
+                                    h4("A continuación se presenta el modelo lineal resultante, así como un widget para predecir con el mismo, sin embargo queda claro que los resultados obtenidos por este modelo presentan grandes problemas debido a la naturaleza no lineal del sistema."),
+                                    br(),
+                                    img(src = "pred_modlineal.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(),
+                                    br(),
+                                    h2(strong("Modelo lineal interactivo"), align = "center"),
+                                    box(plotOutput("plot_lineal", height = 450)),
+                                    box(
+                                        title = "Edad",
+                                        sliderInput("age", "Años:", 1, 100, 50),
+                                    ),
+                                    box(
+                                        title = "MMSE",
+                                        sliderInput("mmse", "Puntaje:", 1, 30, 15)
+                                    ),
                                     
                                     offset = 1
                                 )
@@ -418,7 +447,7 @@ ui <- fluidPage(
                                     br(),  
                                     img(src = "pred_modelo1.png", height = 440, style="display: block; margin-left: auto; margin-right: auto;"),
                                     br(),
-                                    h4("Este análisis nos permitió deseschar rápidamente la idea de utilizar los indicadores de eduación y socioeconómicos, así como el genero, esto debido a su alto p-value. Con esto en mente se creo un segundo modelo a partir de las 2 variables con p-values aceptables."),
+                                    h4("Este análisis nos permitió deseschar rápidamente la idea de utilizar los indicadores de eduación y socioeconómicos, así como el genero, esto debido a su alto p-value. Con esto en mente se creó un segundo modelo a partir de las 2 variables con p-values aceptables."),
                                     
                                     offset = 1
                                 )
@@ -530,6 +559,44 @@ server <- function(input, output) {
                 xlab("Nivel Socioeconómico") +
                 ylab("Años de Estudio")
         }
+    })
+    
+    ## Desarrollo del modelo de regresión lineal múltiple
+    sectional_lineal <- new_sectional
+    rows <- dim(sectional_lineal)[1]
+    sectional_lineal <- sectional_lineal[1:(rows-20),];
+    sectional_lineal <- na.omit(sectional_lineal)
+    m <- lm(CDR ~ Age + MMSE, sectional_lineal)
+
+    # Creación del gráfico interactivo y predicción lineal del CDR
+    output$plot_lineal <- renderPlot({
+        plot(m$fitted.values, sectional_lineal$CDR, main="Modelo de regresión lineal múltiple",
+            sub="CDR = 2.375087 + 0.002396 * Age - 0.083702 * MMSE",
+            xlab = "Valores ajustados de CDR", ylab = "CDR Predicto",
+            xlim = c(-0.25,3.25), ylim = c(-0.25,3.25))
+        abline(lsfit(m$fitted.values, sectional_lineal$CDR))
+        CDR_estimate <- 2.375087 + 0.002396 * input$age - 0.083702 * input$mmse
+        if (CDR_estimate < 0.25)
+        {
+            CDR_prediction <- 0
+        }
+        else if (CDR_estimate >= 0.25 && CDR_estimate < 0.75)
+        {
+            CDR_prediction <- 0.5
+        }
+        else if (CDR_estimate >= 0.75 && CDR_estimate < 1.5)
+        {
+            CDR_prediction <- 1
+        }
+        else if (CDR_estimate >= 1.5 && CDR_estimate < 2.5)
+        {
+            CDR_prediction <- 2
+        }
+        else if (CDR_estimate >= 2.5)
+        {
+            CDR_prediction <- 3
+        }
+        points(CDR_estimate, y = CDR_prediction ,pch = 18, col = "blue", cex = 3)
     })
 }
 
