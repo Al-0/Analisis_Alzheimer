@@ -98,5 +98,7 @@ summary(tune.out)
 # Realizamos clasificación con el mejor modelo ajustado y obtenemos la matriz de confusión.
 table(true = dat2[-train, "Demented"], 
       pred = predict(tune.out$best.model, newdata = dat2[-train,]))
-plot(tune.out$best.model, dat2[train, ])
+# Podemos observar que el modelo tiene una precisión de 86%, incluso con un dataset que 
+# jamás ha visto antes
+plot(tune.out$best.model, dat2, ylim = c(14,31))
 
